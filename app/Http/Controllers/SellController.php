@@ -89,14 +89,14 @@ class SellController extends Controller
     public function sellProduct(Request $request)
     {
         $products = json_decode($request->getContent(), true);
-        $doctor_id = $products['doctor_id'];
         foreach ($products['bags'] as $product) {
             Sell::create([
                 'product_id' => $product['product_id'],
                 'sell_price' => $product['price'],
                 'quantity' => $product['quantity'],
-                'doctor_id' => $doctor_id
+                'doctor_id' => array_key_exists('doctor_id', $products) ? $products['doctor_id'] : null
             ]);
         }
+        return $products;
     }
 }
