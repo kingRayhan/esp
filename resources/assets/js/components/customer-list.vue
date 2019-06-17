@@ -13,9 +13,10 @@
         <td>Total billed amount</td>
         <td>Action</td>
       </tr>
+
       <tr v-for="doctor in filteredCustomer" :key="doctor.id">
         <td>
-          <a :href="'/doctors/' + doctor.doctor_id">{{ doctor.name }}</a>
+          <a :href=" $POS.url +  '/doctors/' + doctor.doctor_id">{{ doctor.name }}</a>
         </td>
         <td>{{ doctor.number }}</td>
         <td
@@ -23,16 +24,19 @@
         >{{ doctor.shopping_spend ? doctor.shopping_spend : 'No Shopping' }}</td>
         <td>
           <a
-            :href="`/doctors/${doctor.doctor_id}/shoppinghistory`"
+            :href="`${$POS.url}/doctors/${doctor.doctor_id}/shoppinghistory`"
             class="btn btn-info btn-sm"
             v-if="doctor.shopping_spend"
           >
             <i class="fa fa-list"></i>
           </a>
-          <a :href="'/doctors/' + doctor.doctor_id" class="btn btn-primary btn-sm">
+          <a :href="$POS.url + '/doctors/' + doctor.doctor_id" class="btn btn-primary btn-sm">
             <i class="fa fa-eye"></i>
           </a>
-          <a :href="'/doctors/' + doctor.doctor_id + '/edit'" class="btn btn-success btn-sm">
+          <a
+            :href="$POS.url + '/doctors/' + doctor.doctor_id + '/edit'"
+            class="btn btn-success btn-sm"
+          >
             <i class="fa fa-pencil"></i>
           </a>
         </td>

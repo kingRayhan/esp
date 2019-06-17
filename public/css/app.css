@@ -10016,7 +10016,9 @@ a.text-dark:focus {
   font-size: 0;
   display: block;
   width: 100%;
-  background: url(/images/logo-white.png?aabb4525d54b79160b536e58193c3a32) no-repeat center center/100% auto;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
   height: 135px;
 }
 

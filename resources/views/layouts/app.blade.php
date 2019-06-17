@@ -13,13 +13,15 @@
 		var AppRootPath = '{{ url('/') }}';
 	</script>
 	
-	<!-- Favicon icon -->
-  	<link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.ico') }}" />
-	
-	<!-- Input:CSS -->
+	<style>
+		.sidebar .brand-logo a {
+			background-image: url('{{ url('/') }}/images/logo-white.png');
+		}
+	</style>
+
 	<link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}" />
+	
 	<link rel="stylesheet" href="{{ asset('public/css/app.css') }}" />
-	<!-- EndInput -->
 
     @if (trim($__env->yieldContent('header')))
     <!-- Header Scripts only for this page start -->

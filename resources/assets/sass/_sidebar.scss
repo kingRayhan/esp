@@ -18,7 +18,10 @@
             font-size: 0;
             display: block;
             width: 100%;
-            background: url(../images/logo-white.png) no-repeat center center / 100% auto;
+            // background: url(../images/logo-white.png) no-repeat center center / 100% auto;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
             height: 135px;
         }
     }

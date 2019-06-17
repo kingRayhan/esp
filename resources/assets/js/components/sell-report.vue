@@ -119,14 +119,6 @@ export default {
           );
         });
       }
-
-      // else if( this.fromDate != '' && this.toDate != '' )
-      // {
-      //     data = sell.date.filter( d => {
-      //         return (new Date(this.fromDate).getTime()) >= (new Date(d.date).getTime())  && (new Date(this.toDate).getTime()) <= (new Date(d.date).getTime());
-      //     } );
-      // }
-
       return data;
     },
     totalProfit() {

@@ -1,13 +1,13 @@
 	<!-- START SIDEBAR -->
 	<section class="sidebar">
 		<div class="brand-logo">
-			<a href="/">Brand Logo</a>
+		<a href="{{ url('/') }}">Application</a>
 		</div>
 
 		<!-- start sidebar navigation -->
 		<ul class="sidebar-navigation">
 			<li class="active">
-				<a href="/"><i aria-hidden="true" class="fa fa-dashboard"></i> Dashboard</a>
+				<a href="{{ url('/') }}"><i aria-hidden="true" class="fa fa-dashboard"></i> Dashboard</a>
 			</li>
 			<li class="custom-dropdown">
 				<a href="{{ route('products.index') }}"><i class="fa fa-product-hunt" aria-hidden="true"></i>Tests</a>

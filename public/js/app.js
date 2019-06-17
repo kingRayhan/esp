@@ -11847,7 +11847,6 @@ __webpack_require__(48);
 // require('hchs-vue-charts');
 // Vue.use(VueCharts);
 
-
 Vue.component('sell-report', __webpack_require__(49));
 Vue.component('customer-list', __webpack_require__(55));
 
@@ -11860,13 +11859,26 @@ Vue.component('barcode', __webpack_require__(81));
 Vue.component('cart', __webpack_require__(86));
 Vue.component('invoice', __webpack_require__(91));
 
+var shared = {
+    url: AppRootPath
+};
+
+shared.install = function () {
+    Object.defineProperty(Vue.prototype, '$POS', {
+        get: function get() {
+            return shared;
+        }
+    });
+};
+Vue.use(shared);
+
 var app = new Vue({
     el: '#app'
 });
 
 $(document).ready(function () {
-    $(".collapse_menu").on('click', function () {
-        $("body").toggleClass("menu_collapsed");
+    $('.collapse_menu').on('click', function () {
+        $('body').toggleClass('menu_collapsed');
     });
     $('.select2').select2();
 });
@@ -54646,14 +54658,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return new Date(sell.date).getTime() >= _this2.fromTimeStamp && new Date(sell.date).getTime() <= _this2.toTimeStamp;
         });
       }
-
-      // else if( this.fromDate != '' && this.toDate != '' )
-      // {
-      //     data = sell.date.filter( d => {
-      //         return (new Date(this.fromDate).getTime()) >= (new Date(d.date).getTime())  && (new Date(this.toDate).getTime()) <= (new Date(d.date).getTime());
-      //     } );
-      // }
-
       return data;
     },
     totalProfit: function totalProfit() {
@@ -55046,6 +55050,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
@@ -55116,9 +55124,13 @@ var render = function() {
         _vm._l(_vm.filteredCustomer, function(doctor) {
           return _c("tr", { key: doctor.id }, [
             _c("td", [
-              _c("a", { attrs: { href: "/doctors/" + doctor.doctor_id } }, [
-                _vm._v(_vm._s(doctor.name))
-              ])
+              _c(
+                "a",
+                {
+                  attrs: { href: _vm.$POS.url + "/doctors/" + doctor.doctor_id }
+                },
+                [_vm._v(_vm._s(doctor.name))]
+              )
             ]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(doctor.number))]),
@@ -55139,7 +55151,10 @@ var render = function() {
                       staticClass: "btn btn-info btn-sm",
                       attrs: {
                         href:
-                          "/doctors/" + doctor.doctor_id + "/shoppinghistory"
+                          _vm.$POS.url +
+                          "/doctors/" +
+                          doctor.doctor_id +
+                          "/shoppinghistory"
                       }
                     },
                     [_c("i", { staticClass: "fa fa-list" })]
@@ -55150,7 +55165,7 @@ var render = function() {
                 "a",
                 {
                   staticClass: "btn btn-primary btn-sm",
-                  attrs: { href: "/doctors/" + doctor.doctor_id }
+                  attrs: { href: _vm.$POS.url + "/doctors/" + doctor.doctor_id }
                 },
                 [_c("i", { staticClass: "fa fa-eye" })]
               ),
@@ -55159,7 +55174,10 @@ var render = function() {
                 "a",
                 {
                   staticClass: "btn btn-success btn-sm",
-                  attrs: { href: "/doctors/" + doctor.doctor_id + "/edit" }
+                  attrs: {
+                    href:
+                      _vm.$POS.url + "/doctors/" + doctor.doctor_id + "/edit"
+                  }
                 },
                 [_c("i", { staticClass: "fa fa-pencil" })]
               )
