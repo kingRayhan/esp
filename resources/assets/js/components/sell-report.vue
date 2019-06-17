@@ -11,6 +11,18 @@
       <b>To:&nbsp;</b>
       <input type="date" v-model="toDate" placeholder="from Date" class="date-filter">
       <button @click="visibility = 'dateRange'">Filter</button>
+
+      <div class="py-3">
+        <b>Select Doctor</b>
+        <select class="ml-3" v-model="filtered_doctors">
+          <option
+            :value="doctor.doctor_id"
+            v-for="doctor in doctors"
+            :key="doctor.doctor_id"
+          >{{doctor.name}}</option>
+        </select>
+      </div>
+
       <div class="pt-3">
         <table>
           <tr>
@@ -57,18 +69,30 @@ export default {
     axios.get(`${AppRootPath}/apirequest/sells/index`).then(res => {
       this.sellReports = res.data.data;
     });
+    axios.get(`${AppRootPath}/apirequest/doctors/index`).then(res => {
+      this.doctors = res.data.data;
+    });
   },
   data() {
     return {
       sellReports: "",
       visibility: "all",
       fromDate: "",
-      toDate: ""
+      toDate: "",
+      doctors: [],
+      filtered_doctors: null
     };
   },
   computed: {
     filteredSells() {
       var data = "";
+
+      if (this.filtered_doctors) {
+        this.sellReports = this.sellReports.filter(sell => {
+          return sell.doctor.id === this.filtered_doctors;
+        });
+      }
+
       if (this.visibility == "all") data = this.sellReports;
       else if (this.visibility == "today") {
         data = this.sellReports.filter(sell => {
@@ -84,6 +108,7 @@ export default {
             mm = "0" + mm;
           }
           var today = `${dd}/${mm}/${yyyy}`;
+
           return sell.date.match(today);
         });
       } else if (this.visibility == "dateRange") {

@@ -9,7 +9,7 @@
     <tr class="single-product-row" v-for="(product,i) in bags" :key="i">
       <td v-text="product.name"></td>
       <td>
-        <input type="number" id="sell_price" class="cart-input" v-model="product.price">
+        <input type="number" id="sell_price" class="cart-input" v-model="product.price" disabled>
       </td>
       <td>
         <input type="number" class="cart-input" v-model="product.quantity">

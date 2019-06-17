@@ -45,7 +45,6 @@
 export default {
   created() {
     axios.get(`${AppRootPath}/apirequest/doctors/index`).then(res => {
-      console.log(res);
       this.customerList = res.data.data;
     });
   },

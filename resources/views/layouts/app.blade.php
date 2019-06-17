@@ -18,7 +18,7 @@
 	
 	<!-- Input:CSS -->
 	<link rel="stylesheet" href="{{ asset('assets/plugins/font-awesome/css/font-awesome.min.css') }}" />
-	<link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+	<link rel="stylesheet" href="{{ asset('public/css/app.css') }}" />
 	<!-- EndInput -->
 
     @if (trim($__env->yieldContent('header')))
@@ -43,7 +43,7 @@
 	<!-- MAIN CONTENT END -->
 </div>
 	
-	<script src="{{ asset('js/app.js') }}"></script>
+	<script src="{{ asset('public/js/app.js') }}"></script>
 	<!-- EndInput -->
 	@if (trim($__env->yieldContent('footer')))
 	<!-- Footer Scripts only for this page start -->

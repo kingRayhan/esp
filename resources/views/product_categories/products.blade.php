@@ -54,11 +54,8 @@
                     <thead>
                     <tr>
                         <th width="6%">ID#</th>
-                        <th width="20%">Product Name</th>
-                        <th width="20%">Barcode</th>
-                        <th>Buy Price</th>
-                        <th>Sell Price</th>
-                        <th>Stock</th>
+                        <th width="20%">Test Name</th>
+                        <th>Price</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -67,24 +64,8 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>
-                                <div class="barcode-sticker" id="barcode-sticker-{{ $i }}">
-                                    <img
-                                            src="data:image/png;base64,{{ DNS1D::getBarcodePNG(str_pad($product->id, 8, '0', STR_PAD_LEFT), "C128B") }}"
-                                            alt="product-id-{{ str_pad($product->id, 8, '0', STR_PAD_LEFT) }}"
-                                            title="product-id-{{ str_pad($product->id, 8, '0', STR_PAD_LEFT) }}"
-                                    >
-                                    <span class="product-id">{{ str_pad($product->id, 8, '0', STR_PAD_LEFT) }}</span>
-                                </div>
-                                <button class="btn btn-primary btn-sm" onclick="printJS({
-                                        printable : 'barcode-sticker-{{ $i }}',
-                                        type: 'html',
-                                        documentTitle: 'Product Barcode Sticker'
-                                        })"><i class="fa fa-print"></i></button>
-                            </td>
-                            <td>{{ $product->buy_price }}</td>
-                            <td>{{ $product->sell_price }}</td>
-                            <td>{{ $product->stock }}</td>
+                            
+                            <td>{{ $product->price }}</td>
                             <td>
                                 <a href="{{ route('products.edit' , $product->id) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                 <form action="{{ route('products.destroy' , $product->id) }}" method="POST" style="display: inline">

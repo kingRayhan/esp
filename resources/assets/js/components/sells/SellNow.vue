@@ -104,13 +104,14 @@ export default {
     pushProductByBarcode(product) {
       this.pushProduct = product;
     },
+
     updateBags(bag) {
       this.bagsUpdated = bag;
     },
     confirmPurchases() {
       var _this = this;
       axios
-        .post(`/sells/sellProduct/`, {
+        .post(`${AppRootPath}/sells/sellProduct`, {
           bags: this.bagsUpdated,
           doctor_id: this.selected_customer.doctor_id
         })
@@ -214,8 +215,5 @@ export default {
 html,
 body {
   height: 100%;
-}
-.scroll {
-  /**/
 }
 </style>
