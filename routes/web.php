@@ -10,7 +10,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/sells', 'SellController');
 
     Route::get('settings', 'AuthController@settings')->name('settings.show');
-    Route::post('settings', 'AuthController@updateSettings')->name('settings.update');
+    Route::get('settings/roles', 'AuthController@roles')->name('settings.roles');
+    Route::get('settings/roles/{user}', 'AuthController@singleUser')->name('settings.singleUser');
+    Route::post('settings/updateUser', 'AuthController@updateUser')->name('settings.updateUser');
+    Route::post('settings/updateMe', 'AuthController@updateMe')->name('settings.updateMe');
 
 
     /**

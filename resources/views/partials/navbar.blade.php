@@ -19,9 +19,14 @@
 
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        @if(Auth::user()->role === 'superadmin')
+                        <a href="{{ route('settings.roles') }}" class="dropdown-item">Manage Roles</a>
+                        @endif
+
                         <a href="{{ route('settings.show') }}" class="dropdown-item">Settings</a>
+                        
                         <form action="{{ route('logout')  }}" method="post">
-                            {{ csrf_field() }}
+                            @csrf
                             <button type="submit" class="dropdown-item">Logout</button>
                         </form>
                     </div>

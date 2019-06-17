@@ -11,8 +11,11 @@
                     <h3>Update Settings</h3>
                 </div>
 
-                <form action="{{ route('settings.updateMe') }}" method="POST">
+                <form action="{{ route('settings.updateUser') }}" method="POST">
                     @csrf
+
+                    <input type="hidden" name="userId" value="{{$user->id}}">
+
                     <div class="form-group">
                         <label for="name">Name</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" value="{{ $user->name }}">
@@ -20,6 +23,14 @@
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="text" name="email" id="email" class="form-control" placeholder="Your Email" value="{{ $user->email }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select name="role" id="role" value="{{ $user->role }}" class="form-control">
+                            <option value="superadmin" @if($user->role === 'superadmin')selected @endif>Super Admin</option>
+                            <option value="admin" @if($user->role === 'admin')selected @endif>Admin</option>
+                            <option value="employee" @if($user->role === 'employee')selected @endif>Employee</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="password">New Password</label>
