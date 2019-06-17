@@ -13,10 +13,13 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        
+                        <span class="badge badge-primary">{{Auth::user()->role}}</span>
+                        &nbsp;&nbsp; {{ Auth::user()->name }}
+
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
+                        <a href="{{ route('settings.show') }}" class="dropdown-item">Settings</a>
                         <form action="{{ route('logout')  }}" method="post">
                             {{ csrf_field() }}
                             <button type="submit" class="dropdown-item">Logout</button>

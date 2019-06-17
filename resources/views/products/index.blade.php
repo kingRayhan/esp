@@ -24,9 +24,11 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-uppercase pb-1">All Test</h1>
+            @if(Auth::user()->role === 'superadmin')
             <div class="pt-2 pb-4">
                 <a class="btn btn-primary" href="{{ route('products.create') }}">Add New</a>
             </div>
+            @endif
             <table id="datatable" class="table table-hover">
                 <thead>
                     <tr>
@@ -34,7 +36,9 @@
                         <th width="20%">Test Name</th>
                         <td>Category</td>
                         <th>Price</th>
+                        @if(Auth::user()->role === 'superadmin')
                         <th>Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +54,7 @@
                             @endif
                         </td>
                         <td>{{ $product->price }}</td>
+                        @if(Auth::user()->role === 'superadmin')
                         <td>
                             <a href="{{ route('products.edit' , $product->id) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                             <form action="{{ route('products.destroy' , $product->id) }}" method="POST" style="display: inline">
@@ -58,6 +63,7 @@
                                 <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                             </form>
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

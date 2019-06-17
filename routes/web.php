@@ -9,6 +9,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/product_categories', 'ProductCategoryController');
     Route::resource('/sells', 'SellController');
 
+    Route::get('settings', 'AuthController@settings')->name('settings.show');
+    Route::post('settings', 'AuthController@updateSettings')->name('settings.update');
 
 
     /**
