@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Sell;
+use App\Slip;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -88,15 +89,25 @@ class SellController extends Controller
 
     public function sellProduct(Request $request)
     {
+        $slip = Slip::create([
+            'customer_name' => $request->customer_name,
+            'customer_age' => $request->customer_age,
+            'customer_gender' => $request->customer_gender,
+            'discount' => $request->discount,
+            'paid' => $request->paid,
+            'doctor_id' => $request->doctor_id,
+        ]);
         $products = json_decode($request->getContent(), true);
         foreach ($products['bags'] as $product) {
             Sell::create([
                 'product_id' => $product['product_id'],
                 'sell_price' => $product['price'],
-                'quantity' => $product['quantity'],
-                'doctor_id' => array_key_exists('doctor_id', $products) ? $products['doctor_id'] : null
+                'quantity' => 1,
+                // 'quantity' => $product['quantity'],
+                'doctor_id' => array_key_exists('doctor_id', $products) ? $products['doctor_id'] : null,
+                'slip_id' => $slip->id
             ]);
         }
-        return $products;
+        return $slip;
     }
 }

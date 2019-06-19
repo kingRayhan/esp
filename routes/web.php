@@ -16,11 +16,15 @@ Route::middleware('auth')->group(function () {
     Route::post('settings/updateMe', 'AuthController@updateMe')->name('settings.updateMe');
 
 
+
+    Route::get('slips', 'SlipController@index')->name('slip.index');
+    Route::get('slip/{slip}', 'SlipController@show')->name('slip.show');
+
+
     /**
      * Category Archieve
      */
     Route::get('product_categories/{id}/products', 'ProductCategoryController@products')->name('product_category.products');
-
 
     Route::post('/sells/sellProduct/', 'SellController@sellProduct');
     Route::resource('doctors', 'DoctorsController');
@@ -34,7 +38,6 @@ Route::middleware('auth')->group(function () {
     Route::get('apirequest/doctors/index', 'DoctorsController@indexApi');
     Route::get('apirequest/products/index', 'ProductApiController@index');
     Route::get('apirequest/products/categories', 'ProductApiController@categories');
-
     Route::post('/products/getProductData/{product_id}', 'ProductController@getProductData');
 });
 

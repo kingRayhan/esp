@@ -3,46 +3,88 @@
     <div class="row">
       <div class="col-md-4">
         <div v-if="!isConfirmPurchase">
-          <div class="cash-input-group">
-            <label for="paid-amount">Total Bil (with vat)</label>
-            <input
-              type="number"
-              class="cash-input"
-              id="paid-amount"
-              placeholder="Total Bil (with vat)"
-              disabled
-              :value="vatWithTotalBill"
-            >
-          </div>
-          <div class="cash-input-group">
-            <label for="paid-amount">Paid Amount</label>
-            <input
-              type="number"
-              class="cash-input"
-              id="paid-amount"
-              placeholder="Paid Amount"
-              v-model="paidAmount"
-            >
-          </div>
-          <div class="cash-input-group">
-            <label for="paid-amount">Return Amount</label>
-            <input
-              type="number"
-              class="cash-input"
-              id="paid-amount"
-              placeholder="Return Amount"
-              disabled
-              :value="Math.round(returnAmount , 2)"
-            >
-          </div>
-          <div class="cash-input-group">
-            <button
-              class="btn btn-primary btn-sm"
-              @click="makePurchase"
-              v-if=" paidAmount >= vatWithTotalBill"
-            >Confirm Purchase</button>
-            <button class="btn btn-danger btn-sm" @click="$emit('cancelOrder')">Cancel</button>
-          </div>
+          <form @submit.prevent="makePurchase">
+            <div class="cash-input-group">
+              <label for="name">Customer Name</label>
+              <input
+                required
+                type="text"
+                id="name"
+                class="cash-input"
+                placeholder="Customer Name"
+                @change="$emit('customer_name' , $event.target.value)"
+              >
+            </div>
+            <div class="cash-input-group">
+              <label for="age">Customer Age</label>
+              <input
+                required
+                type="number"
+                id="age"
+                class="cash-input"
+                placeholder="Customer Age"
+                @change="$emit('customer_age' , $event.target.value)"
+              >
+            </div>
+            <div class="cash-input-group">
+              <label for="discount">Discount</label>
+              <input
+                type="number"
+                id="discount"
+                class="cash-input"
+                placeholder="Discount"
+                @change="$emit('discount' , $event.target.value)"
+              >
+            </div>
+            <div class="cash-input-group">
+              <label for="gender">Gender</label>
+              <select id="gender" @change="$emit('customer_gender' , $event.target.value)">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div class="cash-input-group">
+              <label for="paid-amount">Total Bil (with vat)</label>
+              <input
+                type="number"
+                class="cash-input"
+                id="paid-amount"
+                placeholder="Total Bil (with vat)"
+                disabled
+                :value="vatWithTotalBill"
+              >
+            </div>
+            <div class="cash-input-group">
+              <label for="paid-amount">Paid Amount</label>
+              <input
+                type="number"
+                class="cash-input"
+                id="paid-amount"
+                @change="$emit('paid' , $event.target.value)"
+                placeholder="Paid Amount"
+                v-model="paidAmount"
+              >
+            </div>
+            <div class="cash-input-group">
+              <label for="paid-amount">Return Amount</label>
+              <input
+                type="number"
+                class="cash-input"
+                id="paid-amount"
+                placeholder="Return Amount"
+                disabled
+                :value="Math.round(returnAmount , 2)"
+              >
+            </div>
+            <div class="cash-input-group">
+              <button
+                class="btn btn-primary btn-sm"
+                v-if=" paidAmount >= vatWithTotalBill"
+                type="submit"
+              >Confirm Purchase</button>
+              <button class="btn btn-danger btn-sm" @click="$emit('cancelOrder')">Cancel</button>
+            </div>
+          </form>
         </div>
         <div v-if="isConfirmPurchase">
           <div class="purchase-confirm">
@@ -97,8 +139,6 @@
               <th>Quantity</th>
               <th>Price</th>
             </tr>
-
-            <!-- Items -->
 
             <tr class="item-row" v-for="prodict in bags" :key="prodict.id">
               <td>

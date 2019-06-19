@@ -3,7 +3,7 @@
     <tr>
       <th>Product Name</th>
       <th>Price</th>
-      <th>Quantity</th>
+      <!-- <th>Quantity</th> -->
       <th>Net Price</th>
     </tr>
     <tr class="single-product-row" v-for="(product,i) in bags" :key="i">
@@ -11,9 +11,10 @@
       <td>
         <input type="number" id="sell_price" class="cart-input" v-model="product.price" disabled>
       </td>
-      <td>
+      <!-- <td>
         <input type="number" class="cart-input" v-model="product.quantity">
-      </td>
+      </td>-->
+
       <td>{{ product.price * product.quantity }}</td>
       <button @click="removeProduct(i)" class="btn btn-danger btn-sm">
         <i class="fa fa-times"></i>
@@ -28,7 +29,7 @@ export default {
   data() {
     return {
       bags: [],
-      quantity: ""
+      quantity: 1
     };
   },
   methods: {
@@ -46,7 +47,7 @@ export default {
       if (this.bags.length) {
         this.bags.forEach(item => {
           if (item.product_id == newProduct.product_id) {
-            item.quantity++;
+            // item.quantity++;
             founded = true;
           }
         });
@@ -55,7 +56,6 @@ export default {
       if (!founded) {
         this.bags.push(newProduct);
       }
-
       this.$emit("bagsUpdated", this.bags);
     },
     removeProduct(index) {

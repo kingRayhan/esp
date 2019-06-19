@@ -51,6 +51,11 @@
         :customer="selected_customer"
         @purchased="confirmPurchases"
         @cancelOrder="doneShopping=false"
+        @customer_name="customer_name = $event"
+        @customer_age="customer_age = $event"
+        @customer_gender="customer_gender = $event"
+        @discount="discount = $event"
+        @paid="paid = $event"
       />
     </div>
   </div>
@@ -88,7 +93,14 @@ export default {
 
       confirmPurchase: false,
       doneShopping: false,
-      errorHappened: false
+      errorHappened: false,
+
+      //
+      customer_name: null,
+      customer_age: null,
+      customer_gender: "male",
+      discount: null,
+      paid: null
     };
   },
   methods: {
@@ -113,10 +125,16 @@ export default {
       axios
         .post(`${AppRootPath}/sells/sellProduct`, {
           bags: this.bagsUpdated,
+          customer_name: this.customer_name,
+          customer_age: this.customer_age,
+          customer_gender: this.customer_gender,
+          paid: this.paid,
+          discount: this.discount,
           doctor_id: this.selected_customer.doctor_id
         })
         .then(res => {
           this.confirmPurchase = true;
+          window.location.href = `${AppRootPath}/slip/${res.data.id}`;
         })
         .catch(function(error) {
           _this.errorHappened = true;

@@ -15,6 +15,12 @@ class CreateSlipsTable extends Migration
     {
         Schema::create('slips', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('customer_name');
+            $table->string('customer_age');
+            $table->string('customer_gender');
+            $table->integer('paid');
+            $table->integer('discount')->nullable();
+            $table->integer('doctor_id')->nullable();
             $table->timestamps();
         });
     }

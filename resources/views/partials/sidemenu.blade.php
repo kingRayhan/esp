@@ -21,11 +21,29 @@
 				</ul>
 			</li>
 			@endif
+
+
+			@if(Auth::user()->role === 'admin' || Auth::user()->role === 'superadmin')
+			<li class="custom-dropdown">
+				<a href="{{ route('doctors.index') }}">Doctors</a>
+
+				<ul class="sidebar-submenu">
+					<li><a href="{{ route('doctors.index') }}">All Doctors</a></li>
+					<li><a href="{{ route('doctors.create') }}">Add New</a></li>
+				</ul>
+			</li>
+			@endif
 			
 
 			@if(Auth::user()->role !== 'employee' )
 			<li class="custom-dropdown">
 				<a href="{{ route('sells.index') }}">Sell Report</a>
+			</li>
+			@endif
+
+			@if(Auth::user()->role !== 'employee' )
+			<li class="custom-dropdown">
+				<a href="{{ route('slip.index') }}">Payment Slips</a>
 			</li>
 			@endif
 			

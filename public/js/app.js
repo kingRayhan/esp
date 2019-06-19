@@ -55372,6 +55372,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -55397,7 +55402,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       confirmPurchase: false,
       doneShopping: false,
-      errorHappened: false
+      errorHappened: false,
+
+      //
+      customer_name: null,
+      customer_age: null,
+      customer_gender: "male",
+      discount: null,
+      paid: null
     };
   },
 
@@ -55423,9 +55435,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
       axios.post(AppRootPath + "/sells/sellProduct", {
         bags: this.bagsUpdated,
+        customer_name: this.customer_name,
+        customer_age: this.customer_age,
+        customer_gender: this.customer_gender,
+        paid: this.paid,
+        discount: this.discount,
         doctor_id: this.selected_customer.doctor_id
       }).then(function (res) {
         _this2.confirmPurchase = true;
+        window.location.href = AppRootPath + "/slip/" + res.data.id;
       }).catch(function (error) {
         _this.errorHappened = true;
         console.error(error);
@@ -55555,6 +55573,21 @@ var render = function() {
                 purchased: _vm.confirmPurchases,
                 cancelOrder: function($event) {
                   _vm.doneShopping = false
+                },
+                customer_name: function($event) {
+                  _vm.customer_name = $event
+                },
+                customer_age: function($event) {
+                  _vm.customer_age = $event
+                },
+                customer_gender: function($event) {
+                  _vm.customer_gender = $event
+                },
+                discount: function($event) {
+                  _vm.discount = $event
+                },
+                paid: function($event) {
+                  _vm.paid = $event
                 }
               }
             })
@@ -56702,13 +56735,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["newProduct"],
   data: function data() {
     return {
       bags: [],
-      quantity: ""
+      quantity: 1
     };
   },
 
@@ -56727,7 +56761,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.bags.length) {
         this.bags.forEach(function (item) {
           if (item.product_id == newProduct.product_id) {
-            item.quantity++;
+            // item.quantity++;
             founded = true;
           }
         });
@@ -56736,7 +56770,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (!founded) {
         this.bags.push(newProduct);
       }
-
       this.$emit("bagsUpdated", this.bags);
     },
     removeProduct: function removeProduct(index) {
@@ -56794,30 +56827,6 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c("td", [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: product.quantity,
-                      expression: "product.quantity"
-                    }
-                  ],
-                  staticClass: "cart-input",
-                  attrs: { type: "number" },
-                  domProps: { value: product.quantity },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(product, "quantity", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
               _c("td", [_vm._v(_vm._s(product.price * product.quantity))]),
               _vm._v(" "),
               _c(
@@ -56848,8 +56857,6 @@ var staticRenderFns = [
       _c("th", [_vm._v("Product Name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Quantity")]),
       _vm._v(" "),
       _c("th", [_vm._v("Net Price")])
     ])
@@ -57157,6 +57164,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["bags", "customer"],
@@ -57210,97 +57257,202 @@ var render = function() {
       _c("div", { staticClass: "col-md-4" }, [
         !_vm.isConfirmPurchase
           ? _c("div", [
-              _c("div", { staticClass: "cash-input-group" }, [
-                _c("label", { attrs: { for: "paid-amount" } }, [
-                  _vm._v("Total Bil (with vat)")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "cash-input",
-                  attrs: {
-                    type: "number",
-                    id: "paid-amount",
-                    placeholder: "Total Bil (with vat)",
-                    disabled: ""
-                  },
-                  domProps: { value: _vm.vatWithTotalBill }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "cash-input-group" }, [
-                _c("label", { attrs: { for: "paid-amount" } }, [
-                  _vm._v("Paid Amount")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.paidAmount,
-                      expression: "paidAmount"
-                    }
-                  ],
-                  staticClass: "cash-input",
-                  attrs: {
-                    type: "number",
-                    id: "paid-amount",
-                    placeholder: "Paid Amount"
-                  },
-                  domProps: { value: _vm.paidAmount },
+              _c(
+                "form",
+                {
                   on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.paidAmount = $event.target.value
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.makePurchase($event)
                     }
                   }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "cash-input-group" }, [
-                _c("label", { attrs: { for: "paid-amount" } }, [
-                  _vm._v("Return Amount")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "cash-input",
-                  attrs: {
-                    type: "number",
-                    id: "paid-amount",
-                    placeholder: "Return Amount",
-                    disabled: ""
-                  },
-                  domProps: { value: Math.round(_vm.returnAmount, 2) }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "cash-input-group" }, [
-                _vm.paidAmount >= _vm.vatWithTotalBill
-                  ? _c(
+                },
+                [
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "name" } }, [
+                      _vm._v("Customer Name")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "cash-input",
+                      attrs: {
+                        required: "",
+                        type: "text",
+                        id: "name",
+                        placeholder: "Customer Name"
+                      },
+                      on: {
+                        change: function($event) {
+                          _vm.$emit("customer_name", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "age" } }, [
+                      _vm._v("Customer Age")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "cash-input",
+                      attrs: {
+                        required: "",
+                        type: "number",
+                        id: "age",
+                        placeholder: "Customer Age"
+                      },
+                      on: {
+                        change: function($event) {
+                          _vm.$emit("customer_age", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "discount" } }, [
+                      _vm._v("Discount")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "cash-input",
+                      attrs: {
+                        type: "number",
+                        id: "discount",
+                        placeholder: "Discount"
+                      },
+                      on: {
+                        change: function($event) {
+                          _vm.$emit("discount", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "gender" } }, [
+                      _vm._v("Gender")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        attrs: { id: "gender" },
+                        on: {
+                          change: function($event) {
+                            _vm.$emit("customer_gender", $event.target.value)
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "male" } }, [
+                          _vm._v("Male")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "female" } }, [
+                          _vm._v("Female")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "paid-amount" } }, [
+                      _vm._v("Total Bil (with vat)")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "cash-input",
+                      attrs: {
+                        type: "number",
+                        id: "paid-amount",
+                        placeholder: "Total Bil (with vat)",
+                        disabled: ""
+                      },
+                      domProps: { value: _vm.vatWithTotalBill }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "paid-amount" } }, [
+                      _vm._v("Paid Amount")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.paidAmount,
+                          expression: "paidAmount"
+                        }
+                      ],
+                      staticClass: "cash-input",
+                      attrs: {
+                        type: "number",
+                        id: "paid-amount",
+                        placeholder: "Paid Amount"
+                      },
+                      domProps: { value: _vm.paidAmount },
+                      on: {
+                        change: function($event) {
+                          _vm.$emit("paid", $event.target.value)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.paidAmount = $event.target.value
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "paid-amount" } }, [
+                      _vm._v("Return Amount")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "cash-input",
+                      attrs: {
+                        type: "number",
+                        id: "paid-amount",
+                        placeholder: "Return Amount",
+                        disabled: ""
+                      },
+                      domProps: { value: Math.round(_vm.returnAmount, 2) }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
+                    _vm.paidAmount >= _vm.vatWithTotalBill
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: { type: "submit" }
+                          },
+                          [_vm._v("Confirm Purchase")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
                       "button",
                       {
-                        staticClass: "btn btn-primary btn-sm",
-                        on: { click: _vm.makePurchase }
+                        staticClass: "btn btn-danger btn-sm",
+                        on: {
+                          click: function($event) {
+                            _vm.$emit("cancelOrder")
+                          }
+                        }
                       },
-                      [_vm._v("Confirm Purchase")]
+                      [_vm._v("Cancel")]
                     )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-danger btn-sm",
-                    on: {
-                      click: function($event) {
-                        _vm.$emit("cancelOrder")
-                      }
-                    }
-                  },
-                  [_vm._v("Cancel")]
-                )
-              ])
+                  ])
+                ]
+              )
             ])
           : _vm._e(),
         _vm._v(" "),

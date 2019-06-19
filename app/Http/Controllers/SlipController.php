@@ -14,7 +14,8 @@ class SlipController extends Controller
      */
     public function index()
     {
-        //
+        $slips =  Slip::all();
+        return view('slip.index', compact('slips'));
     }
 
     /**
@@ -34,9 +35,7 @@ class SlipController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
+    { }
 
     /**
      * Display the specified resource.
@@ -46,7 +45,8 @@ class SlipController extends Controller
      */
     public function show(Slip $slip)
     {
-        //
+        // return $slip->orders;
+        return view('slip.slip', compact('slip'));
     }
 
     /**
@@ -56,9 +56,7 @@ class SlipController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Slip $slip)
-    {
-        //
-    }
+    { }
 
     /**
      * Update the specified resource in storage.
