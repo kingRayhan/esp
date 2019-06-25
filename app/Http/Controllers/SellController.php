@@ -95,6 +95,7 @@ class SellController extends Controller
             'customer_gender' => $request->customer_gender,
             'discount' => $request->discount,
             'paid' => $request->paid,
+            'bill_date' => $request->bill_date,
             'doctor_id' => $request->doctor_id,
         ]);
         $products = json_decode($request->getContent(), true);

@@ -55405,6 +55405,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       errorHappened: false,
 
       //
+      bill_date: null,
       customer_name: null,
       customer_age: null,
       customer_gender: "male",
@@ -55440,7 +55441,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         customer_gender: this.customer_gender,
         paid: this.paid,
         discount: this.discount,
-        doctor_id: this.selected_customer.doctor_id
+        doctor_id: this.selected_customer.doctor_id,
+        bill_date: this.billTimeStamp
       }).then(function (res) {
         _this2.confirmPurchase = true;
         window.location.href = AppRootPath + "/slip/" + res.data.id;
@@ -55457,6 +55459,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.bagsUpdated.reduce(function (total, currentbag) {
         return total += currentbag.price * currentbag.quantity;
       }, 0);
+    },
+    billTimeStamp: function billTimeStamp() {
+      var date = new Date(this.bill_date);
+      return date.getTime();
     }
   }
 });
@@ -55579,6 +55585,9 @@ var render = function() {
                 },
                 customer_age: function($event) {
                   _vm.customer_age = $event
+                },
+                bill_date: function($event) {
+                  _vm.bill_date = $event
                 },
                 customer_gender: function($event) {
                   _vm.customer_gender = $event
@@ -57204,6 +57213,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["bags", "customer"],
@@ -57216,10 +57228,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     returnAmount: function returnAmount() {
-      if (this.paidAmount == 0 || this.paidAmount < this.vatWithTotalBill) return 0;
-      return this.paidAmount - this.vatWithTotalBill;
+      if (this.paidAmount == 0 || this.paidAmount < this.totalBill) return 0;
+      return this.paidAmount - this.totalBill;
     },
-    totalBil: function totalBil() {
+    totalBill: function totalBill() {
       return this.bags.reduce(function (totalBill, current) {
         return totalBill += current.price * current.quantity;
       }, 0);
@@ -57254,7 +57266,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-4" }, [
+      _c("div", { staticClass: "col-md-6 mx-auto" }, [
         !_vm.isConfirmPurchase
           ? _c("div", [
               _c(
@@ -57338,6 +57350,7 @@ var render = function() {
                     _c(
                       "select",
                       {
+                        staticClass: "form-control",
                         attrs: { id: "gender" },
                         on: {
                           change: function($event) {
@@ -57358,8 +57371,22 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "cash-input-group" }, [
+                    _c("label", { attrs: { for: "date" } }, [_vm._v("Date")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "date", id: "date", required: "" },
+                      on: {
+                        change: function($event) {
+                          _vm.$emit("bill_date", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "cash-input-group" }, [
                     _c("label", { attrs: { for: "paid-amount" } }, [
-                      _vm._v("Total Bil (with vat)")
+                      _vm._v("Total Bill")
                     ]),
                     _vm._v(" "),
                     _c("input", {
@@ -57367,10 +57394,9 @@ var render = function() {
                       attrs: {
                         type: "number",
                         id: "paid-amount",
-                        placeholder: "Total Bil (with vat)",
                         disabled: ""
                       },
-                      domProps: { value: _vm.vatWithTotalBill }
+                      domProps: { value: _vm.totalBill }
                     })
                   ]),
                   _vm._v(" "),
@@ -57427,16 +57453,14 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "cash-input-group" }, [
-                    _vm.paidAmount >= _vm.vatWithTotalBill
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary btn-sm",
-                            attrs: { type: "submit" }
-                          },
-                          [_vm._v("Confirm Purchase")]
-                        )
-                      : _vm._e(),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary btn-sm",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Confirm Purchase")]
+                    ),
                     _vm._v(" "),
                     _c(
                       "button",
@@ -57481,158 +57505,6 @@ var render = function() {
               ])
             ])
           : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { attrs: { id: "page-wrap" } }, [
-          _c("div", { attrs: { id: "header" } }, [_vm._v("INVOICE")]),
-          _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "invoice-provider-details" }, [
-            _c("div", { attrs: { id: "identity" } }, [
-              _vm.customer
-                ? _c("div", { attrs: { id: "address" } }, [
-                    _c("b", [_vm._v(_vm._s(_vm.customer.name))]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(
-                      "\n              " +
-                        _vm._s(_vm.customer.address) +
-                        "\n              "
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n              Phone: " +
-                        _vm._s(_vm.customer.number) +
-                        "\n            "
-                    )
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("div", { attrs: { id: "customer" } }, [
-              _c("table", { attrs: { id: "meta" } }, [
-                _c("tr", [
-                  _c("td", { staticClass: "meta-head" }, [_vm._v("Date")]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { attrs: { id: "date" } }, [
-                      _vm._v(_vm._s(_vm.dateToday))
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "table",
-            { staticClass: "invoice-details", attrs: { id: "items" } },
-            [
-              _vm._m(2),
-              _vm._v(" "),
-              _vm._l(_vm.bags, function(prodict) {
-                return _c("tr", { key: prodict.id, staticClass: "item-row" }, [
-                  _c("td", [
-                    _c("div", { staticClass: "item-name" }, [
-                      _vm._v(_vm._s(prodict.name))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "cost" }, [
-                      _vm._v(_vm._s(prodict.price))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "qty" }, [
-                      _vm._v(_vm._s(prodict.quantity))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("span", { staticClass: "price" }, [
-                      _vm._v(_vm._s(prodict.quantity * prodict.price))
-                    ])
-                  ])
-                ])
-              }),
-              _vm._v(" "),
-              _c("tr", { staticClass: "tr-border" }, [
-                _c("td"),
-                _vm._v(" "),
-                _c("td"),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border text-bold" }, [
-                  _vm._v("Subtotal")
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "top-border left-border" }, [
-                  _vm._v(_vm._s(_vm.totalBil))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td"),
-                _vm._v(" "),
-                _c("td"),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border text-bold" }, [
-                  _vm._v("Vat (15%)")
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border" }, [
-                  _vm._v(_vm._s(_vm.vatAmount))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td"),
-                _vm._v(" "),
-                _c("td"),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border text-bold" }, [
-                  _vm._v("Total")
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border" }, [
-                  _vm._v(_vm._s(_vm.vatWithTotalBill))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td"),
-                _vm._v(" "),
-                _c("td"),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border text-bold" }, [
-                  _vm._v("Paid")
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border" }, [
-                  _vm._v(_vm._s(_vm.paidAmount))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td"),
-                _vm._v(" "),
-                _c("td"),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border text-bold" }, [
-                  _vm._v("Return")
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "left-border top-border" }, [
-                  _vm._v(_vm._s(Math.round(_vm.returnAmount, 2)))
-                ])
-              ])
-            ],
-            2
-          )
-        ])
       ])
     ])
   ])
@@ -57650,28 +57522,6 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "fa fa-print" }), _vm._v(" Print\n          ")]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "logo" } }, [
-      _c("h1", [_vm._v("লাবন্য ডায়গনষ্টিক সেন্টার")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("Item")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Unit Cost")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Quantity")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Price")])
-    ])
   }
 ]
 render._withStripped = true

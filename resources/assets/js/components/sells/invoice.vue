@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-6 mx-auto">
         <div v-if="!isConfirmPurchase">
           <form @submit.prevent="makePurchase">
             <div class="cash-input-group">
@@ -38,21 +38,28 @@
             </div>
             <div class="cash-input-group">
               <label for="gender">Gender</label>
-              <select id="gender" @change="$emit('customer_gender' , $event.target.value)">
+              <select
+                id="gender"
+                @change="$emit('customer_gender' , $event.target.value)"
+                class="form-control"
+              >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
             </div>
             <div class="cash-input-group">
-              <label for="paid-amount">Total Bil (with vat)</label>
+              <label for="date">Date</label>
               <input
-                type="number"
-                class="cash-input"
-                id="paid-amount"
-                placeholder="Total Bil (with vat)"
-                disabled
-                :value="vatWithTotalBill"
+                type="date"
+                id="date"
+                @change="$emit('bill_date' , $event.target.value)"
+                class="form-control"
+                required
               >
+            </div>
+            <div class="cash-input-group">
+              <label for="paid-amount">Total Bill</label>
+              <input type="number" class="cash-input" id="paid-amount" disabled :value="totalBill">
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Paid Amount</label>
@@ -77,11 +84,7 @@
               >
             </div>
             <div class="cash-input-group">
-              <button
-                class="btn btn-primary btn-sm"
-                v-if=" paidAmount >= vatWithTotalBill"
-                type="submit"
-              >Confirm Purchase</button>
+              <button class="btn btn-primary btn-sm" type="submit">Confirm Purchase</button>
               <button class="btn btn-danger btn-sm" @click="$emit('cancelOrder')">Cancel</button>
             </div>
           </form>
@@ -98,7 +101,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-8">
+      <!-- <div class="col-md-8">
         <div id="page-wrap">
           <div id="header">INVOICE</div>
           <div id="logo">
@@ -117,12 +120,12 @@
             </div>
             <div id="customer">
               <table id="meta">
-                <!-- <tr>
+                <tr>
                   <td class="meta-head">Invoice #</td>
                   <td>
                     <div>000123</div>
                   </td>
-                </tr>-->
+                </tr>
                 <tr>
                   <td class="meta-head">Date</td>
                   <td>
@@ -187,7 +190,7 @@
             </tr>
           </table>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -204,11 +207,10 @@ export default {
   },
   computed: {
     returnAmount() {
-      if (this.paidAmount == 0 || this.paidAmount < this.vatWithTotalBill)
-        return 0;
-      return this.paidAmount - this.vatWithTotalBill;
+      if (this.paidAmount == 0 || this.paidAmount < this.totalBill) return 0;
+      return this.paidAmount - this.totalBill;
     },
-    totalBil() {
+    totalBill() {
       return this.bags.reduce(
         (totalBill, current) => (totalBill += current.price * current.quantity),
         0

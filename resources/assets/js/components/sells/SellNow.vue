@@ -53,13 +53,13 @@
         @cancelOrder="doneShopping=false"
         @customer_name="customer_name = $event"
         @customer_age="customer_age = $event"
+        @bill_date="bill_date = $event"
         @customer_gender="customer_gender = $event"
         @discount="discount = $event"
         @paid="paid = $event"
       />
     </div>
   </div>
-  <!--#root-->
 </template>
 
 
@@ -96,6 +96,7 @@ export default {
       errorHappened: false,
 
       //
+      bill_date: null,
       customer_name: null,
       customer_age: null,
       customer_gender: "male",
@@ -130,7 +131,8 @@ export default {
           customer_gender: this.customer_gender,
           paid: this.paid,
           discount: this.discount,
-          doctor_id: this.selected_customer.doctor_id
+          doctor_id: this.selected_customer.doctor_id,
+          bill_date: this.billTimeStamp
         })
         .then(res => {
           this.confirmPurchase = true;
@@ -149,6 +151,10 @@ export default {
       return this.bagsUpdated.reduce((total, currentbag) => {
         return (total += currentbag.price * currentbag.quantity);
       }, 0);
+    },
+    billTimeStamp() {
+      const date = new Date(this.bill_date);
+      return date.getTime();
     }
   }
 };

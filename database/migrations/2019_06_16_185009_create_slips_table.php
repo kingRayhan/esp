@@ -18,7 +18,8 @@ class CreateSlipsTable extends Migration
             $table->string('customer_name');
             $table->string('customer_age');
             $table->string('customer_gender');
-            $table->integer('paid');
+            $table->string('bill_date')->nullable();
+            $table->integer('paid')->nullable();
             $table->integer('discount')->nullable();
             $table->integer('doctor_id')->nullable();
             $table->timestamps();
