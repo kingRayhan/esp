@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Slip;
 use Illuminate\Http\Request;
+use App\Http\Resources\SlipResource;
+
 
 class SlipController extends Controller
 {
@@ -14,8 +16,15 @@ class SlipController extends Controller
      */
     public function index()
     {
-        $slips =  Slip::all();
-        return view('slip.index', compact('slips'));
+        // $slips =  SlipResource::collection(Slip::all());
+        // return $slips;
+        return view('slip.index');
+    }
+    public function reportApi()
+    {
+        $slips =  SlipResource::collection(Slip::all());
+        return $slips;
+        // return view('slip.index', compact('slips'));
     }
 
     /**

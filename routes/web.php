@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
      * API
      */
     Route::get('apirequest/sells/index', 'SellApiController@index');
+    Route::get('apirequest/sells/report', 'SlipController@reportApi');
     Route::get('apirequest/doctors/index', 'DoctorsController@indexApi');
     Route::get('apirequest/products/index', 'ProductApiController@index');
     Route::get('apirequest/products/categories', 'ProductApiController@categories');

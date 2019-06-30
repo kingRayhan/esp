@@ -15,6 +15,7 @@ require('sweetalert')
 // Vue.use(VueCharts);
 
 Vue.component('sell-report', require('./components/sell-report.vue'))
+Vue.component('report', require('./components/report'))
 Vue.component('customer-list', require('./components/customer-list.vue'))
 
 Vue.component('sell-now', require('./components/sells/SellNow.vue'))

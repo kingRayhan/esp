@@ -91,10 +91,7 @@
         </div>
         <div v-if="isConfirmPurchase">
           <div class="purchase-confirm">
-            <h2>Purchase confirmed</h2>
-            <button class="btn btn-primary" onclick="printJS('page-wrap', 'html')">
-              <i class="fa fa-print"></i> Print
-            </button>
+            <h2>Purchase Confirmed</h2>
             <button class="btn btn-warning" @click="$emit('cancelOrder')">
               <i class="fa fa-angle-left"></i> Back
             </button>

@@ -42,9 +42,7 @@
         <th>Refered Doctor</th>
         <th>Time</th>
         <th>Test Name</th>
-        <th>Unit Sell Price</th>
-        <th>Quantity</th>
-        <th>Net Sell Price</th>
+        <th>Price</th>
       </tr>
 
       <tr v-for="s in filteredSells" :key="s.sell_id">
@@ -55,8 +53,6 @@
         <td v-if="s.doctor == null">Other Doctor</td>
         <td>{{ s.date }}&nbsp;&nbsp;&nbsp;{{ s.time }}</td>
         <td>{{ s.product_name }}</td>
-        <td>{{ s.sell_unit_price }}</td>
-        <td>{{ s.quantity }}</td>
         <td>{{ s.total_sell_price }}</td>
       </tr>
     </table>
@@ -144,7 +140,6 @@ export default {
     toTimeStamp(date) {
       var newDate = this.toDate.split("-");
       var fromDate = `${newDate[2]}/${newDate[1]}/${newDate[0]}`;
-
       return new Date(fromDate).getTime();
     }
   }
