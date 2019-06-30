@@ -1,15 +1,15 @@
 <template>
   <form>
     <div class="selectbox">
-      <input type="reset" value="x" class="deselect" @click="$emit('customerSelected' , '' )">
-      <input type="text" class="search-input" placeholder="Select Doctor" v-model="searchCustomer">
+      <input type="reset" value="x" class="deselect" @click="$emit('customerSelected' , '' )" />
+      <input type="text" class="search-input" placeholder="Select Doctor" v-model="searchCustomer" />
       <ul class="list">
         <li v-for="doctor in filteredCustomer" :key="doctor.doctor_id">
           <label
             :data-customer-id="doctor.doctor_id    "
             @click="$emit('customerSelected' , doctor)"
           >
-            <input type="radio" name="customer">
+            <input type="radio" name="customer" />
             {{ doctor.name }}
           </label>
         </li>
@@ -34,11 +34,9 @@ export default {
   computed: {
     filteredCustomer() {
       return [...this.customers].filter(doctor => {
-        return (
-          doctor.name.includes(this.searchCustomer) ||
-          doctor.number.includes(this.searchCustomer) ||
-          doctor.email.includes(this.searchCustomer)
-        );
+        return doctor.name
+          .toLowerCase()
+          .includes(this.searchCustomer.toLowerCase());
       });
     }
   }

@@ -3,9 +3,9 @@
     <input
       type="text"
       class="form-control"
-      placeholder="Search doctor by Name / Email / Phone number"
+      placeholder="Search doctor by Name"
       v-model="searchCustomer"
-    >
+    />
     <table class="table">
       <tr>
         <td>Name</td>
@@ -61,11 +61,9 @@ export default {
   computed: {
     filteredCustomer() {
       return Array.from(this.customerList).filter(doctor => {
-        return (
-          doctor.name.includes(this.searchCustomer) ||
-          doctor.number.includes(this.searchCustomer) ||
-          doctor.email.includes(this.searchCustomer)
-        );
+        return doctor.name
+          .toLowerCase()
+          .includes(this.searchCustomer.toLowerCase());
       });
     }
   }

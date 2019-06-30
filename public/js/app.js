@@ -73455,7 +73455,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       return Array.from(this.customerList).filter(function (doctor) {
-        return doctor.name.includes(_this2.searchCustomer) || doctor.number.includes(_this2.searchCustomer) || doctor.email.includes(_this2.searchCustomer);
+        return doctor.name.toLowerCase().includes(_this2.searchCustomer.toLowerCase());
       });
     }
   }
@@ -73480,10 +73480,7 @@ var render = function() {
         }
       ],
       staticClass: "form-control",
-      attrs: {
-        type: "text",
-        placeholder: "Search doctor by Name / Email / Phone number"
-      },
+      attrs: { type: "text", placeholder: "Search doctor by Name" },
       domProps: { value: _vm.searchCustomer },
       on: {
         input: function($event) {
@@ -74348,7 +74345,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       var _this2 = this;
 
       return [].concat(_toConsumableArray(this.customers)).filter(function (doctor) {
-        return doctor.name.includes(_this2.searchCustomer) || doctor.number.includes(_this2.searchCustomer) || doctor.email.includes(_this2.searchCustomer);
+        return doctor.name.toLowerCase().includes(_this2.searchCustomer.toLowerCase());
       });
     }
   }
