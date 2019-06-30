@@ -86,7 +86,6 @@ class SellController extends Controller
         //
     }
 
-
     public function sellProduct(Request $request)
     {
         $slip = Slip::create([
@@ -96,7 +95,7 @@ class SellController extends Controller
             'discount' => $request->discount,
             'paid' => $request->paid,
             'bill_date' => $request->bill_date,
-            'doctor_id' => $request->doctor_id,
+            'doctor_id' => $request->doctor_id ? $request->doctor_id : null,
         ]);
         $products = json_decode($request->getContent(), true);
         foreach ($products['bags'] as $product) {
@@ -104,8 +103,6 @@ class SellController extends Controller
                 'product_id' => $product['product_id'],
                 'sell_price' => $product['price'],
                 'quantity' => 1,
-                // 'quantity' => $product['quantity'],
-                'doctor_id' => array_key_exists('doctor_id', $products) ? $products['doctor_id'] : null,
                 'slip_id' => $slip->id
             ]);
         }

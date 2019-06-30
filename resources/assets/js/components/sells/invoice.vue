@@ -13,7 +13,7 @@
                 class="cash-input"
                 placeholder="Customer Name"
                 @change="$emit('customer_name' , $event.target.value)"
-              >
+              />
             </div>
             <div class="cash-input-group">
               <label for="age">Customer Age</label>
@@ -24,7 +24,7 @@
                 class="cash-input"
                 placeholder="Customer Age"
                 @change="$emit('customer_age' , $event.target.value)"
-              >
+              />
             </div>
             <div class="cash-input-group">
               <label for="discount">Discount</label>
@@ -33,8 +33,9 @@
                 id="discount"
                 class="cash-input"
                 placeholder="Discount"
+                v-model="discount"
                 @change="$emit('discount' , $event.target.value)"
-              >
+              />
             </div>
             <div class="cash-input-group">
               <label for="gender">Gender</label>
@@ -55,11 +56,11 @@
                 @change="$emit('bill_date' , $event.target.value)"
                 class="form-control"
                 required
-              >
+              />
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Total Bill</label>
-              <input type="number" class="cash-input" id="paid-amount" disabled :value="totalBill">
+              <input type="number" class="cash-input" id="paid-amount" disabled :value="totalBill" />
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Paid Amount</label>
@@ -70,7 +71,7 @@
                 @change="$emit('paid' , $event.target.value)"
                 placeholder="Paid Amount"
                 v-model="paidAmount"
-              >
+              />
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Return Amount</label>
@@ -81,10 +82,14 @@
                 placeholder="Return Amount"
                 disabled
                 :value="Math.round(returnAmount , 2)"
-              >
+              />
             </div>
             <div class="cash-input-group">
-              <button class="btn btn-primary btn-sm" type="submit">Confirm Purchase</button>
+              <button
+                v-if="returnAmount >= 0"
+                class="btn btn-primary btn-sm"
+                type="submit"
+              >Confirm Purchase</button>
               <button class="btn btn-danger btn-sm" @click="$emit('cancelOrder')">Cancel</button>
             </div>
           </form>
@@ -199,13 +204,14 @@ export default {
   data() {
     return {
       paidAmount: 0,
+      discount: 0,
       isConfirmPurchase: false
     };
   },
   computed: {
     returnAmount() {
       if (this.paidAmount == 0 || this.paidAmount < this.totalBill) return 0;
-      return this.paidAmount - this.totalBill;
+      return this.paidAmount - (this.totalBill - this.discount);
     },
     totalBill() {
       return this.bags.reduce(

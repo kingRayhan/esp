@@ -34,13 +34,6 @@
 			</li>
 			@endif
 			
-
-			@if(Auth::user()->role !== 'employee' )
-			<li class="custom-dropdown">
-				<a href="{{ route('sells.index') }}">Sell Report</a>
-			</li>
-			@endif
-
 			@if(Auth::user()->role !== 'employee' )
 			<li class="custom-dropdown">
 				<a href="{{ route('slip.index') }}">Payment Slips</a>

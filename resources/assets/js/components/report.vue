@@ -8,11 +8,11 @@
       </div>
 
       <div class="col-md-6">
-        <div class="filter date-filter">
-          <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateStart">
-          <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateEnd">
+        <div class="filter date-filter" v-if="!(filtered_doctor_id || filtered_test_id)">
+          <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateStart" />
+          <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateEnd" />
         </div>
-        <div class="filter test-filter">
+        <div v-if="!(this.filterDateEnd && this.filterDateStart)" class="filter test-filter">
           <label for="doctor">Doctor</label>
           <select id="doctor" v-model="filtered_doctor_id">
             <option
@@ -23,7 +23,7 @@
           </select>
           <button @click="filtered_doctor_id = null">x</button>
         </div>
-        <div class="filter doctor-filter">
+        <div v-if="!(this.filterDateEnd && this.filterDateStart)" class="filter doctor-filter">
           <label for="test">Test</label>
           <select id="test" v-model="filtered_test_id">
             <option
@@ -125,70 +125,62 @@ export default {
       return moment(date).format("Do MMMM YYYY");
     },
     fillDateFilter(e) {
-      //   console.log(e.target.dataset.dateFilterType);
-      console.log(new Date(e.target.value).getTime());
+      this[e.target.dataset.dateFilterType] = new Date(
+        e.target.value
+      ).getTime();
     }
   },
   computed: {
     TotalBills() {
-      return this.reports.reduce(
+      return this.filteredReports.reduce(
         (total, current) => (total += current.bills),
         0
       );
     },
     TotalDiscounts() {
-      return this.reports.reduce((total, current) => {
+      return this.filteredReports.reduce((total, current) => {
         return (total += Number(current.discount));
       }, 0);
     },
     TotalNetBills() {
-      return this.reports.reduce(
+      return this.filteredReports.reduce(
         (total, current) => (total += current.net_bills),
         0
       );
     },
     filteredReports() {
-      let results = [];
+      if (this.filterDateEnd && this.filterDateStart) {
+        return this.reports.filter(report => {
+          let time = Number(report.bill_date);
+          return this.filterDateStart <= time && this.filterDateEnd >= time;
+        });
+      }
 
-      //   if (this.filtered_doctor_id && this.filtered_test_id) {
-      //     results.push(
-      //       this.reports.filter(report => {
-      //         return (
-      //           report.doctor &&
-      //           report.doctor.id === this.filtered_doctor_id &&
-      //           report.tests.some(
-      //             test => test.product_id == this.filtered_test_id
-      //           )
-      //         );
-      //       })
-      //     );
-      //   }
+      if (this.filtered_doctor_id && this.filtered_test_id) {
+        return this.reports.filter(report => {
+          return (
+            report.doctor &&
+            report.doctor.id === this.filtered_doctor_id &&
+            report.tests.some(test => test.product_id == this.filtered_test_id)
+          );
+        });
+      }
 
       if (this.filtered_doctor_id) {
         let filter = this.reports.filter(report => {
           return report.doctor && report.doctor.id === this.filtered_doctor_id;
         });
-        results.push(filter);
+        return filter;
       }
 
       if (this.filtered_test_id) {
         let filter = this.reports.filter(report =>
           report.tests.some(test => test.product_id == this.filtered_test_id)
         );
-        results.push(filter);
+        return filter;
       }
 
-      const uniqueArray = arr => {
-        let returnArr = [];
-        let unique = Array.from(new Set(arr.map(r => r.id))).map(id => [
-          ...arr.find(result => result.id === id)
-        ])[0];
-
-        return unique;
-      };
-
-      console.log(uniqueArray(results));
-      return [];
+      return this.reports;
     }
   }
 };
