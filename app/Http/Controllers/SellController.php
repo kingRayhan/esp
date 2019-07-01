@@ -102,10 +102,10 @@ class SellController extends Controller
             Sell::create([
                 'product_id' => $product['product_id'],
                 'sell_price' => $product['price'],
-                'quantity' => 1,
                 'slip_id' => $slip->id
             ]);
         }
+        return $request->bill_date;
         return $slip;
     }
 }

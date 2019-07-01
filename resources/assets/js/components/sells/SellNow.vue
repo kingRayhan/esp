@@ -136,7 +136,7 @@ export default {
         })
         .then(res => {
           this.confirmPurchase = true;
-          window.location.href = `${AppRootPath}/slip/${res.data.id}`;
+          // window.location.href = `${AppRootPath}/slip/${res.data.id}`;
         })
         .catch(function(error) {
           _this.errorHappened = true;

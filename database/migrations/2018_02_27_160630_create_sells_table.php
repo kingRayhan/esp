@@ -17,7 +17,6 @@ class CreateSellsTable extends Migration
             $table->increments('id');
             $table->string('product_id');
             $table->integer('sell_price');
-            $table->integer('quantity');
             $table->integer('doctor_id')->nullable();
             $table->integer('slip_id')->nullable();
             $table->timestamps();
