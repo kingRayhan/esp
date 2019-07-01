@@ -73168,64 +73168,6 @@ var render = function() {
                 [_vm._v("x")]
               )
             ])
-          : _vm._e(),
-        _vm._v(" "),
-        !(this.filterDateEnd && this.filterDateStart)
-          ? _c("div", { staticClass: "filter doctor-filter" }, [
-              _c("label", { attrs: { for: "test" } }, [_vm._v("Test")]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filtered_test_id,
-                      expression: "filtered_test_id"
-                    }
-                  ],
-                  attrs: { id: "test" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.filtered_test_id = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                _vm._l(_vm.tests, function(test) {
-                  return _c(
-                    "option",
-                    {
-                      key: test.product_id,
-                      domProps: { value: test.product_id }
-                    },
-                    [_vm._v(_vm._s(test.name))]
-                  )
-                })
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      _vm.filtered_test_id = null
-                    }
-                  }
-                },
-                [_vm._v("x")]
-              )
-            ])
           : _vm._e()
       ])
     ]),

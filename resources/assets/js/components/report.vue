@@ -23,7 +23,7 @@
           </select>
           <button @click="filtered_doctor_id = null">x</button>
         </div>
-        <div v-if="!(this.filterDateEnd && this.filterDateStart)" class="filter doctor-filter">
+        <!-- <div v-if="!(this.filterDateEnd && this.filterDateStart)" class="filter doctor-filter">
           <label for="test">Test</label>
           <select id="test" v-model="filtered_test_id">
             <option
@@ -33,7 +33,7 @@
             >{{test.name}}</option>
           </select>
           <button @click="filtered_test_id = null">x</button>
-        </div>
+        </div>-->
       </div>
     </div>
     <div class="row">
@@ -123,8 +123,7 @@ export default {
   methods: {
     renderTime(time) {
       let date = new Date(Number(time));
-      return moment(date)
-        .format("Do MMMM YYYY");
+      return moment(date).format("Do MMMM YYYY");
     },
     fillDateFilter(e) {
       this[e.target.dataset.dateFilterType] = new Date(
