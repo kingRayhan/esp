@@ -1,27 +1,41 @@
 <template>
   <div>
     <div class="buttons pb-2 statics">
-      <button class="btn btn-primary" @click="visibility = 'all'">All</button>
-      <button class="btn btn-primary" @click="visibility = 'today'">Today</button>
+      <!-- <button class="btn btn-primary" @click="visibility = 'all'">All</button> -->
+      <!-- <button class="btn btn-primary" @click="visibility = 'today'">Today</button> -->
       &nbsp;
       &nbsp;
       <b>From:&nbsp;</b>
-      <input type="date" v-model="fromDate" forma placeholder="from Date" class="date-filter" />
+      <input
+        type="date"
+        data-date-filter-type="fromDate"
+        @input="fillDateFilter"
+        forma
+        placeholder="from Date"
+        class="date-filter"
+      />
       &nbsp;
       <b>To:&nbsp;</b>
-      <input type="date" v-model="toDate" placeholder="from Date" class="date-filter" />
-      <button @click="visibility = 'dateRange'">Filter</button>
+      <input
+        type="date"
+        data-date-filter-type="toDate"
+        @input="fillDateFilter"
+        placeholder="from Date"
+        class="date-filter"
+      />
+      <button @click="fromDate = null;toDate = null">x</button>
 
-      <!-- <div class="py-3">
-        <b>Select Doctor</b>
-        <select class="ml-3" v-model="filtered_doctors">
+      <div class="py-3">
+        <b>Test</b>
+        <select class="ml-3" v-model="filtered_test_id">
           <option
-            :value="doctor.doctor_id"
-            v-for="doctor in doctors"
-            :key="doctor.doctor_id"
-          >{{doctor.name}}</option>
+            :value="test.product_id"
+            v-for="test in tests"
+            :key="test.product_id"
+          >{{test.name}}</option>
         </select>
-      </div>-->
+        <button @click="filtered_test_id=null">x</button>
+      </div>
 
       <div class="pt-3">
         <table>
@@ -52,95 +66,118 @@
           <a :href="`/doctors/${s.doctor.id}`">{{ s.doctor.name }}</a>
         </td>
         <td v-if="s.doctor == null">Other Doctor</td>
-        <td>{{ s.date }}&nbsp;&nbsp;&nbsp;{{ s.time }}</td>
-        <td>{{ s.total_sell_price }}</td>
+        <td>{{ renderTime(s.date) }}</td>
+        <td>{{ s.price }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 export default {
-  created() {
-    axios.get(`${AppRootPath}/apirequest/sells/index`).then(res => {
-      this.sellReports = res.data.data;
-    });
-    axios.get(`${AppRootPath}/apirequest/doctors/index`).then(res => {
-      this.doctors = res.data.data;
-    });
+  async created() {
+    const {
+      data: { data: sellReports }
+    } = await axios.get(`${AppRootPath}/apirequest/sells/index`);
+    this.sellReports = sellReports;
+
+    const {
+      data: { data: tests }
+    } = await axios.get(`${AppRootPath}/apirequest/products/index`);
+    this.tests = tests;
   },
   data() {
     return {
       sellReports: "",
       visibility: "all",
-      fromDate: "",
-      toDate: "",
-      doctors: [],
-      filtered_doctors: null
+      fromDate: null,
+      toDate: null,
+      tests: [],
+      filtered_test_id: null
     };
   },
   computed: {
     filteredSells() {
-      var data = "";
+      // var data = "";
 
-      if (this.filtered_doctors) {
-        this.sellReports = this.sellReports.filter(sell => {
-          return sell.doctor.id === this.filtered_doctors;
+      // if (this.filtered_doctors) {
+      //   this.sellReports = this.sellReports.filter(sell => {
+      //     return sell.doctor.id === this.filtered_doctors;
+      //   });
+      // }
+
+      // if (this.visibility == "all") data = this.sellReports;
+      // else if (this.visibility == "today") {
+      //   data = this.sellReports.filter(sell => {
+      //     var today = new Date();
+      //     var dd = today.getDate();
+      //     var mm = today.getMonth() + 1; //January is 0!
+
+      //     var yyyy = today.getFullYear();
+      //     if (dd < 10) {
+      //       dd = "0" + dd;
+      //     }
+      //     if (mm < 10) {
+      //       mm = "0" + mm;
+      //     }
+      //     var today = `${dd}/${mm}/${yyyy}`;
+
+      //     return sell.date.match(today);
+      //   });
+      // } else if (this.visibility == "dateRange") {
+      //   data = this.sellReports.filter(sell => {
+      //     return (
+      //       new Date(sell.date).getTime() >= this.fromTimeStamp &&
+      //       new Date(sell.date).getTime() <= this.toTimeStamp
+      //     );
+      //   });
+      // }
+      // return data;
+
+      if (this.filtered_test_id) {
+        return this.sellReports.filter(report => {
+          let time = Number(report.date);
+          return report.product_id == this.filtered_test_id;
         });
       }
 
-      if (this.visibility == "all") data = this.sellReports;
-      else if (this.visibility == "today") {
-        data = this.sellReports.filter(sell => {
-          var today = new Date();
-          var dd = today.getDate();
-          var mm = today.getMonth() + 1; //January is 0!
-
-          var yyyy = today.getFullYear();
-          if (dd < 10) {
-            dd = "0" + dd;
-          }
-          if (mm < 10) {
-            mm = "0" + mm;
-          }
-          var today = `${dd}/${mm}/${yyyy}`;
-
-          return sell.date.match(today);
+      if (this.fromDate && this.toDate) {
+        return this.sellReports.filter(report => {
+          let time = Number(report.date);
+          return this.fromDate <= time && this.toDate >= time;
         });
-      } else if (this.visibility == "dateRange") {
-        data = this.sellReports.filter(sell => {
+      }
+
+      if (this.fromDate && this.toDate && this.filtered_test_id) {
+        return this.sellReports.filter(report => {
+          let time = Number(report.date);
           return (
-            new Date(sell.date).getTime() >= this.fromTimeStamp &&
-            new Date(sell.date).getTime() <= this.toTimeStamp
+            this.fromDate <= time &&
+            this.toDate >= time &&
+            report.product_id == this.filtered_test_id
           );
         });
       }
-      return data;
-    },
-    totalProfit() {
-      var totalP = 0;
-      Array.from(this.filteredSells).forEach(el => {
-        totalP += el.net_profit;
-      });
-      return totalP;
+
+      return this.sellReports;
     },
     totalSell() {
-      var total = 0;
-      Array.from(this.filteredSells).forEach(el => {
-        total += el.total_sell_price;
-      });
-      return total;
+      return [...this.filteredSells].reduce(
+        (total, current) => (total += Number(current.price)),
+        0
+      );
+    }
+  },
+  methods: {
+    renderTime(time) {
+      let date = new Date(Number(time));
+      return moment(date).format("Do MMMM YYYY");
     },
-    fromTimeStamp(date) {
-      var newDate = this.fromDate.split("-");
-      var fromDate = `${newDate[2]}/${newDate[1]}/${newDate[0]}`;
-
-      return new Date(fromDate).getTime();
-    },
-    toTimeStamp(date) {
-      var newDate = this.toDate.split("-");
-      var fromDate = `${newDate[2]}/${newDate[1]}/${newDate[0]}`;
-      return new Date(fromDate).getTime();
+    fillDateFilter(e) {
+      this[e.target.dataset.dateFilterType] = new Date(
+        e.target.value
+      ).getTime();
     }
   }
 };

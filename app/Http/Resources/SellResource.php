@@ -16,14 +16,11 @@ class SellResource extends JsonResource
     {
         return [
             'sell_id' => $this->id,
+            'product_id' => $this->product->id,
             'product_name' => $this->product->name,
-            'quantity' => $this->quantity,
-            'sell_unit_price' => $this->sell_price,
-            'total_sell_price' => $this->quantity * $this->sell_price,
+            'price' => $this->sell_price,
             'doctor' => $this->doctor,
-            'date' => $this->slip['bill_date'],
-            // 'date' => $this->created_at->format('d/m/Y'),
-            // 'time' => $this->created_at->format('g:i:s a')
+            'date' => $this->slip['bill_date']
         ];
     }
 }

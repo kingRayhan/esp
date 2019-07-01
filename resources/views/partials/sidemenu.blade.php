@@ -38,8 +38,8 @@
 			<li class="custom-dropdown">
 				<a href="{{ route('doctors.index') }}">Reports</a>
 				<ul class="sidebar-submenu">
-					<li><a href="{{ route('sells.index') }}">Sell Reports</a></li>
-					<li><a href="{{ route('slip.index') }}">Test Reports</a></li>
+					<li><a href="{{ route('sells.index') }}">Test Reports</a></li>
+					<li><a href="{{ route('slip.index') }}">Sell Reports</a></li>
 				</ul>
 			</li>
 			@endif
