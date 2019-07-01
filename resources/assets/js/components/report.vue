@@ -13,7 +13,7 @@
           <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateStart" />
           <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateEnd" />
         </div>
-        <div v-if="!(this.filterDateEnd && this.filterDateStart)" class="filter test-filter">
+        <div class="filter test-filter">
           <label for="doctor">Doctor</label>
           <select id="doctor" v-model="filtered_doctor_id">
             <option

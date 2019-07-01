@@ -73108,60 +73108,58 @@ var render = function() {
           })
         ]),
         _vm._v(" "),
-        !(this.filterDateEnd && this.filterDateStart)
-          ? _c("div", { staticClass: "filter test-filter" }, [
-              _c("label", { attrs: { for: "doctor" } }, [_vm._v("Doctor")]),
-              _vm._v(" "),
-              _c(
-                "select",
+        _c("div", { staticClass: "filter test-filter" }, [
+          _c("label", { attrs: { for: "doctor" } }, [_vm._v("Doctor")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
                 {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filtered_doctor_id,
-                      expression: "filtered_doctor_id"
-                    }
-                  ],
-                  attrs: { id: "doctor" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.filtered_doctor_id = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                _vm._l(_vm.doctors, function(doctor) {
-                  return _c(
-                    "option",
-                    { key: doctor.id, domProps: { value: doctor.doctor_id } },
-                    [_vm._v(_vm._s(doctor.name))]
-                  )
-                })
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      _vm.filtered_doctor_id = null
-                    }
-                  }
-                },
-                [_vm._v("x")]
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filtered_doctor_id,
+                  expression: "filtered_doctor_id"
+                }
+              ],
+              attrs: { id: "doctor" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.filtered_doctor_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            _vm._l(_vm.doctors, function(doctor) {
+              return _c(
+                "option",
+                { key: doctor.id, domProps: { value: doctor.doctor_id } },
+                [_vm._v(_vm._s(doctor.name))]
               )
-            ])
-          : _vm._e()
+            })
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              on: {
+                click: function($event) {
+                  _vm.filtered_doctor_id = null
+                }
+              }
+            },
+            [_vm._v("x")]
+          )
+        ])
       ])
     ]),
     _vm._v(" "),
