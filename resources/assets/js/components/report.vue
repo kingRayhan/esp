@@ -8,7 +8,8 @@
       </div>
 
       <div class="col-md-6">
-        <div class="filter date-filter" v-if="!(filtered_doctor_id || filtered_test_id)">
+        <!-- <div class="filter date-filter" v-if="!(filtered_doctor_id || filtered_test_id)"> -->
+        <div class="filter date-filter">
           <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateStart" />
           <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateEnd" />
         </div>
@@ -150,19 +151,27 @@ export default {
       );
     },
     filteredReports() {
-      if (this.filterDateEnd && this.filterDateStart) {
+      // if (this.filtered_doctor_id && this.filtered_test_id) {
+      //   return this.reports.filter(report => {
+      //     return (
+      //       report.doctor &&
+      //       report.doctor.id === this.filtered_doctor_id &&
+      //       report.tests.some(test => test.product_id == this.filtered_test_id)
+      //     );
+      //   });
+      // }
+
+      if (
+        this.filterDateEnd &&
+        this.filterDateStart &&
+        this.filtered_doctor_id
+      ) {
         return this.reports.filter(report => {
           let time = Number(report.bill_date);
-          return this.filterDateStart <= time && this.filterDateEnd >= time;
-        });
-      }
-
-      if (this.filtered_doctor_id && this.filtered_test_id) {
-        return this.reports.filter(report => {
           return (
-            report.doctor &&
-            report.doctor.id === this.filtered_doctor_id &&
-            report.tests.some(test => test.product_id == this.filtered_test_id)
+            this.filterDateStart <= time &&
+            this.filterDateEnd >= time &&
+            report.doctor.id === this.filtered_doctor_id
           );
         });
       }
@@ -174,12 +183,12 @@ export default {
         return filter;
       }
 
-      if (this.filtered_test_id) {
-        let filter = this.reports.filter(report =>
-          report.tests.some(test => test.product_id == this.filtered_test_id)
-        );
-        return filter;
-      }
+      // if (this.filtered_test_id) {
+      //   let filter = this.reports.filter(report =>
+      //     report.tests.some(test => test.product_id == this.filtered_test_id)
+      //   );
+      //   return filter;
+      // }
 
       return this.reports;
     }

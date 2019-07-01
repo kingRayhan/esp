@@ -72159,6 +72159,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
 
 // import moment from "moment";
 
@@ -72259,18 +72260,20 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     filteredReports: function filteredReports() {
       var _this = this;
 
-      if (this.filterDateEnd && this.filterDateStart) {
+      // if (this.filtered_doctor_id && this.filtered_test_id) {
+      //   return this.reports.filter(report => {
+      //     return (
+      //       report.doctor &&
+      //       report.doctor.id === this.filtered_doctor_id &&
+      //       report.tests.some(test => test.product_id == this.filtered_test_id)
+      //     );
+      //   });
+      // }
+
+      if (this.filterDateEnd && this.filterDateStart && this.filtered_doctor_id) {
         return this.reports.filter(function (report) {
           var time = Number(report.bill_date);
-          return _this.filterDateStart <= time && _this.filterDateEnd >= time;
-        });
-      }
-
-      if (this.filtered_doctor_id && this.filtered_test_id) {
-        return this.reports.filter(function (report) {
-          return report.doctor && report.doctor.id === _this.filtered_doctor_id && report.tests.some(function (test) {
-            return test.product_id == _this.filtered_test_id;
-          });
+          return _this.filterDateStart <= time && _this.filterDateEnd >= time && report.doctor.id === _this.filtered_doctor_id;
         });
       }
 
@@ -72281,14 +72284,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         return filter;
       }
 
-      if (this.filtered_test_id) {
-        var _filter = this.reports.filter(function (report) {
-          return report.tests.some(function (test) {
-            return test.product_id == _this.filtered_test_id;
-          });
-        });
-        return _filter;
-      }
+      // if (this.filtered_test_id) {
+      //   let filter = this.reports.filter(report =>
+      //     report.tests.some(test => test.product_id == this.filtered_test_id)
+      //   );
+      //   return filter;
+      // }
 
       return this.reports;
     }
@@ -73095,25 +73096,17 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-6" }, [
-        !(_vm.filtered_doctor_id || _vm.filtered_test_id)
-          ? _c("div", { staticClass: "filter date-filter" }, [
-              _c("input", {
-                attrs: {
-                  type: "date",
-                  "data-date-filter-type": "filterDateStart"
-                },
-                on: { change: _vm.fillDateFilter }
-              }),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  type: "date",
-                  "data-date-filter-type": "filterDateEnd"
-                },
-                on: { change: _vm.fillDateFilter }
-              })
-            ])
-          : _vm._e(),
+        _c("div", { staticClass: "filter date-filter" }, [
+          _c("input", {
+            attrs: { type: "date", "data-date-filter-type": "filterDateStart" },
+            on: { change: _vm.fillDateFilter }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "date", "data-date-filter-type": "filterDateEnd" },
+            on: { change: _vm.fillDateFilter }
+          })
+        ]),
         _vm._v(" "),
         !(this.filterDateEnd && this.filterDateStart)
           ? _c("div", { staticClass: "filter test-filter" }, [
