@@ -132,11 +132,11 @@ export default {
           paid: this.paid,
           discount: this.discount,
           doctor_id: this.selected_customer.doctor_id,
-          bill_date: this.billTimeStamp
+          bill_date: String(this.billTimeStamp)
         })
         .then(res => {
           this.confirmPurchase = true;
-          // window.location.href = `${AppRootPath}/slip/${res.data.id}`;
+          window.location.href = `${AppRootPath}/slip/${res.data.id}`;
         })
         .catch(function(error) {
           _this.errorHappened = true;

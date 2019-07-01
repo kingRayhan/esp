@@ -105,7 +105,6 @@ class SellController extends Controller
                 'slip_id' => $slip->id
             ]);
         }
-        return $request->bill_date;
         return $slip;
     }
 }
