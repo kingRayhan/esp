@@ -6,13 +6,13 @@
       &nbsp;
       &nbsp;
       <b>From:&nbsp;</b>
-      <input type="date" v-model="fromDate" forma placeholder="from Date" class="date-filter">
+      <input type="date" v-model="fromDate" forma placeholder="from Date" class="date-filter" />
       &nbsp;
       <b>To:&nbsp;</b>
-      <input type="date" v-model="toDate" placeholder="from Date" class="date-filter">
+      <input type="date" v-model="toDate" placeholder="from Date" class="date-filter" />
       <button @click="visibility = 'dateRange'">Filter</button>
 
-      <div class="py-3">
+      <!-- <div class="py-3">
         <b>Select Doctor</b>
         <select class="ml-3" v-model="filtered_doctors">
           <option
@@ -21,7 +21,7 @@
             :key="doctor.doctor_id"
           >{{doctor.name}}</option>
         </select>
-      </div>
+      </div>-->
 
       <div class="pt-3">
         <table>
@@ -39,20 +39,20 @@
     <table class="table">
       <tr>
         <th>Sell ID</th>
+        <th>Test Name</th>
         <th>Refered Doctor</th>
         <th>Time</th>
-        <th>Test Name</th>
         <th>Price</th>
       </tr>
 
       <tr v-for="s in filteredSells" :key="s.sell_id">
         <td>{{ s.sell_id }}</td>
+        <td>{{ s.product_name }}</td>
         <td v-if="s.doctor != null">
           <a :href="`/doctors/${s.doctor.id}`">{{ s.doctor.name }}</a>
         </td>
         <td v-if="s.doctor == null">Other Doctor</td>
         <td>{{ s.date }}&nbsp;&nbsp;&nbsp;{{ s.time }}</td>
-        <td>{{ s.product_name }}</td>
         <td>{{ s.total_sell_price }}</td>
       </tr>
     </table>

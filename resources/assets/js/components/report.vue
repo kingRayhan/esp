@@ -80,7 +80,8 @@
 </template>
 
 <script>
-import moment from "moment";
+// import moment from "moment";
+import moment from "moment-timezone";
 export default {
   async created() {
     /**
@@ -122,7 +123,9 @@ export default {
   methods: {
     renderTime(time) {
       let date = new Date(Number(time));
-      return moment(date).format("Do MMMM YYYY");
+      return moment(date)
+        .tz("Asia/Dhaka")
+        .format("Do MMMM YYYY");
     },
     fillDateFilter(e) {
       this[e.target.dataset.dateFilterType] = new Date(

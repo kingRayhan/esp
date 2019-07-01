@@ -36,16 +36,17 @@
 			
 			@if(Auth::user()->role !== 'employee' )
 			<li class="custom-dropdown">
-				<a href="{{ route('slip.index') }}">Payment Slips</a>
+				<a href="{{ route('doctors.index') }}">Reports</a>
+				<ul class="sidebar-submenu">
+					<li><a href="{{ route('sells.index') }}">Sell Reports</a></li>
+					<li><a href="{{ route('slip.index') }}">Test Reports</a></li>
+				</ul>
 			</li>
 			@endif
 			
 			<li class="custom-dropdown">
 				<a href="{{ route('sells.create') }}">Sell Now</a>
 			</li>
-			
-			
-
 			
 			
 			<li class="collapse_menu">
