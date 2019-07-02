@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('page-title' , 'Edit Product')
+@section('page-title' , 'Edit Test')
 
 @section('page-content')
     <div class="container pt-5">
         <div class="row">
             <div class="col-md-8 mr-auto ml-auto">
                 <div class="text-center">
-                    <h1>Edit Product</h1>
+                    <h1>Edit {{$product->name}}</h1>
                 </div>
                 <form action="{{ route('products.update' , $product) }}" method="POST">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     <div class="form-group">
-                        <label for="name">Product Name:</label>
+                        <label for="name">Test Name:</label>
                         <input 
                             id="name"
                             type="text" 
                             name="name" 
                             class="form-control" 
-                            placeholder="Product Name" 
+                            placeholder="Test Name" 
                             value="{{ $product->name }}">
                     </div>
                     <div class="form-group">

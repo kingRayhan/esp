@@ -14,7 +14,7 @@ require('sweetalert')
 // require('hchs-vue-charts');
 // Vue.use(VueCharts);
 
-Vue.component('sell-report', require('./components/sell-report.vue'))
+Vue.component('test-report', require('./components/test-report.vue'))
 Vue.component('report', require('./components/report'))
 Vue.component('customer-list', require('./components/customer-list.vue'))
 

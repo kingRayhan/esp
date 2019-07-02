@@ -1,9 +1,6 @@
 @extends('layouts.app')
-
-@section('page-title' , 'Sell Reports')
-
+@section('page-title' , 'Test Reports')
 @section('header')
-
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">
     <style>
@@ -45,40 +42,8 @@
     <div class="container-fluid pt-2">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-uppercase">Sell Reports</h1>
-                {{--  <table id="datatable" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th width="10%">Sell ID#</th>
-                            <th width="20%">Time</th>
-                            <th width="20%">Product Name</th>
-                            <th width="15%">Buy Price</th>
-                            <th>Sell Price</th>
-                            <th>Quantity</th>
-                            <th>Net Price</th>
-                            <th>Net Profit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($sells as $sell)
-                            <tr>
-                                <td>{{ $sell->id }}</td>
-                                <td>
-                                    {{ $sell->created_at->format('d/m/y') }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{ $sell->created_at->format('g:i:s a') }}
-                                
-                                </td>
-                                <td>{{ $sell->product->name }}</td>
-                                <td>{{ $sell->product->buy_price }}</td>
-                                <td>{{ $sell->sell_price }}</td>
-                                <td>{{ $sell->quantity }}</td>
-                                <td>{{ $sell->quantity * $sell->sell_price }}</td>
-                                <td>{{ ($sell->quantity * $sell->sell_price) - ($sell->quantity * $sell->product->buy_price)  }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>  --}}
-                <sell-report></sell-report>
+                <h1 class="text-uppercase">Test Reports</h1>
+                <test-report></test-report>
             </div>
         </div>
     </div>

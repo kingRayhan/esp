@@ -1,21 +1,37 @@
 <template>
   <div class="container-fluid pt-5">
     <div class="row">
-      <div class="col-md-6">
-        <h2>Total Bills: {{TotalBills}}</h2>
-        <h2>TotalDiscounts: {{TotalDiscounts}}</h2>
-        <h2>TotalNetBills: {{TotalNetBills}}</h2>
-      </div>
+      <!-- 12 -->
 
       <div class="col-md-6">
-        <!-- <div class="filter date-filter" v-if="!(filtered_doctor_id || filtered_test_id)"> -->
+        <h5>Total Bills: {{TotalBills}}</h5>
+        <h5>TotalDiscounts: {{TotalDiscounts}}</h5>
+        <h5>TotalNetBills: {{TotalNetBills}}</h5>
+        <h5>Count: {{count}}</h5>
+      </div>
+
+      <div class="col-md-6 d-flex">
         <div class="filter date-filter">
-          <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateStart" />
-          <input type="date" @change="fillDateFilter" data-date-filter-type="filterDateEnd" />
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="date"
+              @change="fillDateFilter"
+              data-date-filter-type="filterDateStart"
+            />
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="date"
+              @change="fillDateFilter"
+              data-date-filter-type="filterDateEnd"
+            />
+          </div>
         </div>
-        <div class="filter test-filter">
+        <div class="filter test-filter form-group ml-2 w-100">
           <label for="doctor">Doctor</label>
-          <select id="doctor" v-model="filtered_doctor_id">
+          <select class="form-control" id="doctor" v-model="filtered_doctor_id">
             <option
               v-for="doctor in doctors"
               :value="doctor.doctor_id"
@@ -150,47 +166,38 @@ export default {
         0
       );
     },
+    count() {
+      return this.filteredReports.length;
+    },
     filteredReports() {
-      // if (this.filtered_doctor_id && this.filtered_test_id) {
-      //   return this.reports.filter(report => {
-      //     return (
-      //       report.doctor &&
-      //       report.doctor.id === this.filtered_doctor_id &&
-      //       report.tests.some(test => test.product_id == this.filtered_test_id)
-      //     );
-      //   });
-      // }
-
       if (
         this.filterDateEnd &&
         this.filterDateStart &&
         this.filtered_doctor_id
       ) {
-        return this.reports.filter(report => {
-          let time = Number(report.bill_date);
-          return (
-            this.filterDateStart <= time &&
-            this.filterDateEnd >= time &&
-            report.doctor.id === this.filtered_doctor_id
-          );
-        });
+        return this.reports
+          .filter(report => {
+            let time = Number(report.bill_date);
+            return this.filterDateStart <= time &&
+              this.filterDateEnd >= time &&
+              report.doctor
+              ? report.doctor.id == this.filtered_doctor_id
+              : true;
+          })
+          .reverse();
       }
 
       if (this.filtered_doctor_id) {
-        let filter = this.reports.filter(report => {
-          return report.doctor && report.doctor.id === this.filtered_doctor_id;
-        });
+        let filter = this.reports
+          .filter(report => {
+            return (
+              report.doctor && report.doctor.id === this.filtered_doctor_id
+            );
+          })
+          .reverse();
         return filter;
       }
-
-      // if (this.filtered_test_id) {
-      //   let filter = this.reports.filter(report =>
-      //     report.tests.some(test => test.product_id == this.filtered_test_id)
-      //   );
-      //   return filter;
-      // }
-
-      return this.reports;
+      return this.reports.reverse();
     }
   }
 };

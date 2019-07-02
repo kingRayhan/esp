@@ -34,7 +34,6 @@
             :key="test.product_id"
           >{{test.name}}</option>
         </select>
-        <button @click="filtered_test_id=null">x</button>
       </div>
 
       <div class="pt-3">
@@ -47,26 +46,29 @@
               <h4>{{ totalSell }}</h4>
             </td>
           </tr>
+          <tr>
+            <td>
+              <h4>Count:</h4>
+            </td>
+            <td>
+              <h4>{{ count }}</h4>
+            </td>
+          </tr>
         </table>
       </div>
     </div>
     <table class="table">
       <tr>
         <th>Sell ID</th>
-        <th>Test Name</th>
-        <th>Refered Doctor</th>
         <th>Time</th>
+        <th>Test Name</th>
         <th>Price</th>
       </tr>
 
       <tr v-for="s in filteredSells" :key="s.sell_id">
         <td>{{ s.sell_id }}</td>
-        <td>{{ s.product_name }}</td>
-        <td v-if="s.doctor != null">
-          <a :href="`/doctors/${s.doctor.id}`">{{ s.doctor.name }}</a>
-        </td>
-        <td v-if="s.doctor == null">Other Doctor</td>
         <td>{{ renderTime(s.date) }}</td>
+        <td>{{ s.product_name }}</td>
         <td>{{ s.price }}</td>
       </tr>
     </table>
@@ -98,6 +100,9 @@ export default {
     };
   },
   computed: {
+    count() {
+      return this.filteredSells.length;
+    },
     filteredSells() {
       // var data = "";
 
@@ -136,28 +141,34 @@ export default {
       // return data;
 
       if (this.filtered_test_id) {
-        return this.sellReports.filter(report => {
-          let time = Number(report.date);
-          return report.product_id == this.filtered_test_id;
-        });
+        return this.sellReports
+          .filter(report => {
+            let time = Number(report.date);
+            return report.product_id == this.filtered_test_id;
+          })
+          .reverse();
       }
 
       if (this.fromDate && this.toDate) {
-        return this.sellReports.filter(report => {
-          let time = Number(report.date);
-          return this.fromDate <= time && this.toDate >= time;
-        });
+        return this.sellReports
+          .filter(report => {
+            let time = Number(report.date);
+            return this.fromDate <= time && this.toDate >= time;
+          })
+          .reverse();
       }
 
       if (this.fromDate && this.toDate && this.filtered_test_id) {
-        return this.sellReports.filter(report => {
-          let time = Number(report.date);
-          return (
-            this.fromDate <= time &&
-            this.toDate >= time &&
-            report.product_id == this.filtered_test_id
-          );
-        });
+        return this.sellReports
+          .filter(report => {
+            let time = Number(report.date);
+            return (
+              this.fromDate <= time &&
+              this.toDate >= time &&
+              report.product_id == this.filtered_test_id
+            );
+          })
+          .reverse();
       }
 
       return this.sellReports;

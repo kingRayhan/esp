@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('page-title' , 'All Products')
+@section('page-title' , 'All Tests')
 
 @section('header')
-
 <link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">
-
 @stop
+
+
 @section('footer')
 <script src="{{ asset('assets/plugins/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') }}"></script>
