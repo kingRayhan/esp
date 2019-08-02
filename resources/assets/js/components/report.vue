@@ -210,7 +210,6 @@ export default {
        * Doctor Filter
        */
       if (this.filtered_doctor_id && this.filter_mode == "doctor") {
-        alert("doctor");
         let filter = this.reports
           .filter(report => {
             return (
