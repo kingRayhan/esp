@@ -71438,6 +71438,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -71483,7 +71487,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   }(),
   data: function data() {
     return {
-      sellReports: "",
+      sellReports: [],
       visibility: "all",
       fromDate: null,
       toDate: null,
@@ -71498,42 +71502,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     filteredSells: function filteredSells() {
       var _this = this;
-
-      // var data = "";
-
-      // if (this.filtered_doctors) {
-      //   this.sellReports = this.sellReports.filter(sell => {
-      //     return sell.doctor.id === this.filtered_doctors;
-      //   });
-      // }
-
-      // if (this.visibility == "all") data = this.sellReports;
-      // else if (this.visibility == "today") {
-      //   data = this.sellReports.filter(sell => {
-      //     var today = new Date();
-      //     var dd = today.getDate();
-      //     var mm = today.getMonth() + 1; //January is 0!
-
-      //     var yyyy = today.getFullYear();
-      //     if (dd < 10) {
-      //       dd = "0" + dd;
-      //     }
-      //     if (mm < 10) {
-      //       mm = "0" + mm;
-      //     }
-      //     var today = `${dd}/${mm}/${yyyy}`;
-
-      //     return sell.date.match(today);
-      //   });
-      // } else if (this.visibility == "dateRange") {
-      //   data = this.sellReports.filter(sell => {
-      //     return (
-      //       new Date(sell.date).getTime() >= this.fromTimeStamp &&
-      //       new Date(sell.date).getTime() <= this.toTimeStamp
-      //     );
-      //   });
-      // }
-      // return data;
 
       if (this.filtered_test_id) {
         return this.sellReports.filter(function (report) {
@@ -72712,6 +72680,18 @@ var render = function() {
               [_vm._v(_vm._s(test.name))]
             )
           })
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            on: {
+              click: function($event) {
+                _vm.filtered_test_id = null
+              }
+            }
+          },
+          [_vm._v("x")]
         )
       ]),
       _vm._v(" "),
@@ -72732,26 +72712,28 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c(
-      "table",
-      { staticClass: "table" },
-      [
-        _vm._m(2),
-        _vm._v(" "),
-        _vm._l(_vm.filteredSells, function(s) {
-          return _c("tr", { key: s.sell_id }, [
-            _c("td", [_vm._v(_vm._s(s.sell_id))]),
+    _vm.sellReports.length == 0
+      ? _c("h1", { staticClass: "my-5" }, [_vm._v("Please Wait")])
+      : _c(
+          "table",
+          { staticClass: "table" },
+          [
+            _vm._m(2),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.renderTime(s.date)))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(s.product_name))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(s.price))])
-          ])
-        })
-      ],
-      2
-    )
+            _vm._l(_vm.filteredSells, function(s) {
+              return _c("tr", { key: s.sell_id }, [
+                _c("td", [_vm._v(_vm._s(s.sell_id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.renderTime(s.date)))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(s.product_name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(s.price))])
+              ])
+            })
+          ],
+          2
+        )
   ])
 }
 var staticRenderFns = [
@@ -72950,6 +72932,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
 
 // import moment from "moment";
 
@@ -73014,6 +72999,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       reports: [],
       tests: [],
       doctors: [],
+      filter_mode: "doctor",
       filtered_doctor_id: undefined,
       filtered_test_id: undefined,
       filterDateStart: undefined,
@@ -73053,20 +73039,32 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     filteredReports: function filteredReports() {
       var _this = this;
 
-      if (this.filterDateEnd && this.filterDateStart && this.filtered_doctor_id) {
+      if (this.filterDateEnd && this.filterDateStart && this.filter_mode == "date") {
+        return this.reports.filter(function (report) {
+          var time = Number(report.bill_date);
+          return _this.filterDateStart <= time && _this.filterDateEnd >= time;
+        }).reverse();
+      }
+
+      if (this.filterDateEnd && this.filterDateStart && this.filtered_doctor_id && this.filter_mode == "doctor_and_date") {
+        alert("doctor_and_date");
         return this.reports.filter(function (report) {
           var time = Number(report.bill_date);
           return _this.filterDateStart <= time && _this.filterDateEnd >= time && report.doctor ? report.doctor.id == _this.filtered_doctor_id : true;
         }).reverse();
       }
 
-      if (this.filtered_doctor_id) {
+      /**
+       * Doctor Filter
+       */
+      if (this.filtered_doctor_id && this.filter_mode == "doctor") {
+        alert("doctor");
         var filter = this.reports.filter(function (report) {
           return report.doctor && report.doctor.id === _this.filtered_doctor_id;
         }).reverse();
         return filter;
       }
-      return this.reports.reverse();
+      return this.reports;
     }
   }
 });
@@ -73091,144 +73089,234 @@ var render = function() {
         _c("h5", [_vm._v("Count: " + _vm._s(_vm.count))])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 d-flex" }, [
-        _c("div", { staticClass: "filter date-filter" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "date",
-                "data-date-filter-type": "filterDateStart"
-              },
-              on: { change: _vm.fillDateFilter }
-            })
-          ]),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "filter-method" }, [
+          _c("h5", [_vm._v("Filter Mode")]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
+          _c("label", { staticClass: "mr-3" }, [
             _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "date", "data-date-filter-type": "filterDateEnd" },
-              on: { change: _vm.fillDateFilter }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "filter test-filter form-group ml-2 w-100" }, [
-          _c("label", { attrs: { for: "doctor" } }, [_vm._v("Doctor")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.filtered_doctor_id,
-                  expression: "filtered_doctor_id"
+                  value: _vm.filter_mode,
+                  expression: "filter_mode"
                 }
               ],
-              staticClass: "form-control",
-              attrs: { id: "doctor" },
+              attrs: { type: "radio", name: "filter_mode", value: "date" },
+              domProps: { checked: _vm._q(_vm.filter_mode, "date") },
               on: {
                 change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.filtered_doctor_id = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
+                  _vm.filter_mode = "date"
                 }
               }
-            },
-            _vm._l(_vm.doctors, function(doctor) {
-              return _c(
-                "option",
-                { key: doctor.id, domProps: { value: doctor.doctor_id } },
-                [_vm._v(_vm._s(doctor.name))]
-              )
-            })
-          ),
+            }),
+            _vm._v(" Date\n        ")
+          ]),
+          _vm._v(" "),
+          _c("label", { staticClass: "mr-3" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filter_mode,
+                  expression: "filter_mode"
+                }
+              ],
+              attrs: { type: "radio", name: "filter_mode", value: "doctor" },
+              domProps: { checked: _vm._q(_vm.filter_mode, "doctor") },
+              on: {
+                change: function($event) {
+                  _vm.filter_mode = "doctor"
+                }
+              }
+            }),
+            _vm._v(" Doctor\n        ")
+          ]),
+          _vm._v(" "),
+          _c("label", { staticClass: "mr-3" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filter_mode,
+                  expression: "filter_mode"
+                }
+              ],
+              attrs: {
+                type: "radio",
+                name: "filter_mode",
+                value: "doctor_and_date"
+              },
+              domProps: { checked: _vm._q(_vm.filter_mode, "doctor_and_date") },
+              on: {
+                change: function($event) {
+                  _vm.filter_mode = "doctor_and_date"
+                }
+              }
+            }),
+            _vm._v(" Doctor & Date\n        ")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-flex" }, [
+          _c("div", { staticClass: "filter date-filter" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "date",
+                  "data-date-filter-type": "filterDateStart"
+                },
+                on: { change: _vm.fillDateFilter }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "date",
+                  "data-date-filter-type": "filterDateEnd"
+                },
+                on: { change: _vm.fillDateFilter }
+              })
+            ])
+          ]),
           _vm._v(" "),
           _c(
-            "button",
-            {
-              on: {
-                click: function($event) {
-                  _vm.filtered_doctor_id = null
-                }
-              }
-            },
-            [_vm._v("x")]
+            "div",
+            { staticClass: "filter test-filter form-group ml-2 w-100" },
+            [
+              _c("label", { attrs: { for: "doctor" } }, [_vm._v("Doctor")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filtered_doctor_id,
+                      expression: "filtered_doctor_id"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "doctor" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.filtered_doctor_id = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                _vm._l(_vm.doctors, function(doctor) {
+                  return _c(
+                    "option",
+                    { key: doctor.id, domProps: { value: doctor.doctor_id } },
+                    [_vm._v(_vm._s(doctor.name))]
+                  )
+                })
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  on: {
+                    click: function($event) {
+                      _vm.filtered_doctor_id = null
+                    }
+                  }
+                },
+                [_vm._v("x")]
+              )
+            ]
           )
         ])
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c(
-          "table",
-          { staticClass: "table table-hover", attrs: { id: "datatable" } },
-          [
-            _vm._m(0),
-            _vm._v(" "),
+    _vm.reports.length == 0
+      ? _c("h1", [_vm._v("Please Wait")])
+      : _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
             _c(
-              "tbody",
-              _vm._l(_vm.filteredReports, function(report) {
-                return _c("tr", { key: report.id }, [
-                  _c("td", { domProps: { innerHTML: _vm._s(report.id) } }),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(_vm.renderTime(report.bill_date)))]),
-                  _vm._v(" "),
-                  _c("td", {
-                    domProps: { innerHTML: _vm._s(report.customer_name) }
-                  }),
-                  _vm._v(" "),
-                  report.doctor
-                    ? _c("td", [
+              "table",
+              { staticClass: "table table-hover", attrs: { id: "datatable" } },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.filteredReports, function(report) {
+                    return _c("tr", { key: report.id }, [
+                      _c("td", { domProps: { innerHTML: _vm._s(report.id) } }),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(_vm._s(_vm.renderTime(report.bill_date)))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: { innerHTML: _vm._s(report.customer_name) }
+                      }),
+                      _vm._v(" "),
+                      report.doctor
+                        ? _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  target: "_blank",
+                                  href:
+                                    _vm.$POS.url +
+                                    "/doctors/" +
+                                    report.doctor.id
+                                }
+                              },
+                              [_vm._v(_vm._s(report.doctor.name))]
+                            )
+                          ])
+                        : _c("td", [_vm._v("No ref")]),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: { innerHTML: _vm._s(report.discount) }
+                      }),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: { innerHTML: _vm._s(report.bills) }
+                      }),
+                      _vm._v(" "),
+                      _c("td", {
+                        domProps: { innerHTML: _vm._s(report.net_bills) }
+                      }),
+                      _vm._v(" "),
+                      _c("td", [
                         _c(
                           "a",
                           {
-                            attrs: {
-                              target: "_blank",
-                              href:
-                                _vm.$POS.url + "/doctors/" + report.doctor.id
-                            }
+                            attrs: { href: _vm.$POS.url + "/slip/" + report.id }
                           },
-                          [_vm._v(_vm._s(report.doctor.name))]
+                          [_vm._v("View Slip")]
                         )
                       ])
-                    : _c("td", [_vm._v("No ref")]),
-                  _vm._v(" "),
-                  _c("td", {
-                    domProps: { innerHTML: _vm._s(report.discount) }
-                  }),
-                  _vm._v(" "),
-                  _c("td", { domProps: { innerHTML: _vm._s(report.bills) } }),
-                  _vm._v(" "),
-                  _c("td", {
-                    domProps: { innerHTML: _vm._s(report.net_bills) }
-                  }),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c(
-                      "a",
-                      { attrs: { href: _vm.$POS.url + "/slip/" + report.id } },
-                      [_vm._v("View Slip")]
-                    )
-                  ])
-                ])
-              })
+                    ])
+                  })
+                )
+              ]
             )
-          ]
-        )
-      ])
-    ])
+          ])
+        ])
   ])
 }
 var staticRenderFns = [

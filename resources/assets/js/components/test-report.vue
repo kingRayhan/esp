@@ -34,6 +34,7 @@
             :key="test.product_id"
           >{{test.name}}</option>
         </select>
+        <button @click="filtered_test_id = null">x</button>
       </div>
 
       <div class="pt-3">
@@ -57,7 +58,10 @@
         </table>
       </div>
     </div>
-    <table class="table">
+
+    <h1 class="my-5" v-if="sellReports.length == 0">Please Wait</h1>
+
+    <table v-else class="table">
       <tr>
         <th>Sell ID</th>
         <th>Time</th>
@@ -91,7 +95,7 @@ export default {
   },
   data() {
     return {
-      sellReports: "",
+      sellReports: [],
       visibility: "all",
       fromDate: null,
       toDate: null,
@@ -104,42 +108,6 @@ export default {
       return this.filteredSells.length;
     },
     filteredSells() {
-      // var data = "";
-
-      // if (this.filtered_doctors) {
-      //   this.sellReports = this.sellReports.filter(sell => {
-      //     return sell.doctor.id === this.filtered_doctors;
-      //   });
-      // }
-
-      // if (this.visibility == "all") data = this.sellReports;
-      // else if (this.visibility == "today") {
-      //   data = this.sellReports.filter(sell => {
-      //     var today = new Date();
-      //     var dd = today.getDate();
-      //     var mm = today.getMonth() + 1; //January is 0!
-
-      //     var yyyy = today.getFullYear();
-      //     if (dd < 10) {
-      //       dd = "0" + dd;
-      //     }
-      //     if (mm < 10) {
-      //       mm = "0" + mm;
-      //     }
-      //     var today = `${dd}/${mm}/${yyyy}`;
-
-      //     return sell.date.match(today);
-      //   });
-      // } else if (this.visibility == "dateRange") {
-      //   data = this.sellReports.filter(sell => {
-      //     return (
-      //       new Date(sell.date).getTime() >= this.fromTimeStamp &&
-      //       new Date(sell.date).getTime() <= this.toTimeStamp
-      //     );
-      //   });
-      // }
-      // return data;
-
       if (this.filtered_test_id) {
         return this.sellReports
           .filter(report => {

@@ -1,59 +1,62 @@
 <template>
   <div class="container-fluid pt-5">
     <div class="row">
-      <!-- 12 -->
-
       <div class="col-md-6">
-        <h5>Total Bills: {{TotalBills}}</h5>
-        <h5>TotalDiscounts: {{TotalDiscounts}}</h5>
-        <h5>TotalNetBills: {{TotalNetBills}}</h5>
-        <h5>Count: {{count}}</h5>
+        <h5>Total Bills: {{ TotalBills }}</h5>
+        <h5>TotalDiscounts: {{ TotalDiscounts }}</h5>
+        <h5>TotalNetBills: {{ TotalNetBills }}</h5>
+        <h5>Count: {{ count }}</h5>
       </div>
-
-      <div class="col-md-6 d-flex">
-        <div class="filter date-filter">
-          <div class="form-group">
-            <input
-              class="form-control"
-              type="date"
-              @change="fillDateFilter"
-              data-date-filter-type="filterDateStart"
-            />
+      <div class="col-md-6">
+        <div class="filter-method">
+          <h5>Filter Mode</h5>
+          <label class="mr-3">
+            <input type="radio" name="filter_mode" v-model="filter_mode" value="date" /> Date
+          </label>
+          <label class="mr-3">
+            <input type="radio" name="filter_mode" v-model="filter_mode" value="doctor" /> Doctor
+          </label>
+          <label class="mr-3">
+            <input type="radio" name="filter_mode" v-model="filter_mode" value="doctor_and_date" /> Doctor & Date
+          </label>
+        </div>
+        <div class="d-flex">
+          <div class="filter date-filter">
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="date"
+                @change="fillDateFilter"
+                data-date-filter-type="filterDateStart"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="date"
+                @change="fillDateFilter"
+                data-date-filter-type="filterDateEnd"
+              />
+            </div>
           </div>
-          <div class="form-group">
-            <input
-              class="form-control"
-              type="date"
-              @change="fillDateFilter"
-              data-date-filter-type="filterDateEnd"
-            />
+          <div class="filter test-filter form-group ml-2 w-100">
+            <label for="doctor">Doctor</label>
+            <select class="form-control" id="doctor" v-model="filtered_doctor_id">
+              <option
+                v-for="doctor in doctors"
+                :value="doctor.doctor_id"
+                :key="doctor.id"
+              >{{doctor.name}}</option>
+            </select>
+            <button @click="filtered_doctor_id = null">x</button>
           </div>
         </div>
-        <div class="filter test-filter form-group ml-2 w-100">
-          <label for="doctor">Doctor</label>
-          <select class="form-control" id="doctor" v-model="filtered_doctor_id">
-            <option
-              v-for="doctor in doctors"
-              :value="doctor.doctor_id"
-              :key="doctor.id"
-            >{{doctor.name}}</option>
-          </select>
-          <button @click="filtered_doctor_id = null">x</button>
-        </div>
-        <!-- <div v-if="!(this.filterDateEnd && this.filterDateStart)" class="filter doctor-filter">
-          <label for="test">Test</label>
-          <select id="test" v-model="filtered_test_id">
-            <option
-              v-for="test in tests"
-              :value="test.product_id"
-              :key="test.product_id"
-            >{{test.name}}</option>
-          </select>
-          <button @click="filtered_test_id = null">x</button>
-        </div>-->
       </div>
     </div>
-    <div class="row">
+
+    <h1 v-if="reports.length == 0">Please Wait</h1>
+
+    <div v-else class="row">
       <div class="col-md-12">
         <table id="datatable" class="table table-hover">
           <thead>
@@ -130,6 +133,7 @@ export default {
       reports: [],
       tests: [],
       doctors: [],
+      filter_mode: "doctor",
       filtered_doctor_id: undefined,
       filtered_test_id: undefined,
       filterDateStart: undefined,
@@ -173,8 +177,23 @@ export default {
       if (
         this.filterDateEnd &&
         this.filterDateStart &&
-        this.filtered_doctor_id
+        this.filter_mode == "date"
       ) {
+        return this.reports
+          .filter(report => {
+            let time = Number(report.bill_date);
+            return this.filterDateStart <= time && this.filterDateEnd >= time;
+          })
+          .reverse();
+      }
+
+      if (
+        this.filterDateEnd &&
+        this.filterDateStart &&
+        this.filtered_doctor_id &&
+        this.filter_mode == "doctor_and_date"
+      ) {
+        alert("doctor_and_date");
         return this.reports
           .filter(report => {
             let time = Number(report.bill_date);
@@ -187,7 +206,11 @@ export default {
           .reverse();
       }
 
-      if (this.filtered_doctor_id) {
+      /**
+       * Doctor Filter
+       */
+      if (this.filtered_doctor_id && this.filter_mode == "doctor") {
+        alert("doctor");
         let filter = this.reports
           .filter(report => {
             return (
@@ -197,7 +220,7 @@ export default {
           .reverse();
         return filter;
       }
-      return this.reports.reverse();
+      return this.reports;
     }
   }
 };
