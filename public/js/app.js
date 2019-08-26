@@ -73058,7 +73058,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
        * Doctor Filter
        */
       if (this.filtered_doctor_id && this.filter_mode == "doctor") {
-        alert("doctor");
         var filter = this.reports.filter(function (report) {
           return report.doctor && report.doctor.id === _this.filtered_doctor_id;
         }).reverse();
@@ -73977,7 +73976,7 @@ var render = function() {
                     _vm._v("Billing Card")
                   ]),
                   _vm._v(" "),
-                  _vm.bagsUpdated.length
+                  _vm.bagsUpdated.length && _vm.selected_customer
                     ? _c(
                         "button",
                         {
@@ -73989,7 +73988,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Done")]
+                        [_vm._v("Proceed")]
                       )
                     : _vm._e()
                 ]),

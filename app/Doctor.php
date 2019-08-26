@@ -17,9 +17,9 @@ class Doctor extends Model
     public function totalSpend()
     {
         $spend = 0;
-        foreach ($this->buy as $buy) {
-            $spend += ($buy->sell_price * $buy->quantity);
-        }
+        // foreach ($this->buy as $buy) {
+        //     $spend += ($buy->sell_price * $buy->quantity);
+        // }
         return $spend;
     }
 }

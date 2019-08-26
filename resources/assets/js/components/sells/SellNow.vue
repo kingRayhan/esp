@@ -10,8 +10,8 @@
       </div>
 
       <div class="col-md-3">
-        <category @categorySelected="categorySelected"/>
-        <customers @customerSelected="customerSelected"/>
+        <category @categorySelected="categorySelected" />
+        <customers @customerSelected="customerSelected" />
       </div>
 
       <div class="col-md-6">
@@ -34,14 +34,14 @@
           <div class="mt-3 mb-3">
             <h5 class="text-uppercase pull-left pr-2">Billing Card</h5>
             <button
-              v-if="bagsUpdated.length"
+              v-if="bagsUpdated.length && selected_customer"
               @click="doneShopping = true"
               class="pull-left btn btn-primary btn-sm text-uppercase"
-            >Done</button>
+            >Proceed</button>
           </div>
 
-          <barcode @fetchedProduct="pushProductByBarcode"/>
-          <cart ref="cartCom" :newProduct="pushProduct" @bagsUpdated="updateBags"/>
+          <barcode @fetchedProduct="pushProductByBarcode" />
+          <cart ref="cartCom" :newProduct="pushProduct" @bagsUpdated="updateBags" />
         </div>
       </div>
     </div>

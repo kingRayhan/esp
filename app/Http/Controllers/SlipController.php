@@ -22,7 +22,7 @@ class SlipController extends Controller
     }
     public function reportApi()
     {
-        $slips =  SlipResource::collection(Slip::all());
+        $slips =  SlipResource::collection(Slip::latest()->get());
         return $slips;
         // return view('slip.index', compact('slips'));
     }
