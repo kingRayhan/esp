@@ -15,7 +15,8 @@ class SellApiController extends Controller
      */
     public function index()
     {
-        return SellResource::collection(Sell::orderBy('id' , 'desc')->get());
+        return SellResource::collection(Sell::orderBy('id', 'desc')->paginate(200));
+        // return SellResource::collection(Sell::orderBy('id' , 'desc')->get());
     }
 
     /**

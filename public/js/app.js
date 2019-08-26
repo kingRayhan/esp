@@ -73047,11 +73047,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       }
 
       if (this.filterDateEnd && this.filterDateStart && this.filtered_doctor_id && this.filter_mode == "doctor_and_date") {
-        alert("doctor_and_date");
         return this.reports.filter(function (report) {
           var time = Number(report.bill_date);
-          return _this.filterDateStart <= time && _this.filterDateEnd >= time && report.doctor ? report.doctor.id == _this.filtered_doctor_id : true;
-        }).reverse();
+          return _this.filterDateStart <= time && _this.filterDateEnd >= time && report.doctor.id == _this.filtered_doctor_id;
+        });
       }
 
       /**

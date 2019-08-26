@@ -193,17 +193,14 @@ export default {
         this.filtered_doctor_id &&
         this.filter_mode == "doctor_and_date"
       ) {
-        alert("doctor_and_date");
-        return this.reports
-          .filter(report => {
-            let time = Number(report.bill_date);
-            return this.filterDateStart <= time &&
-              this.filterDateEnd >= time &&
-              report.doctor
-              ? report.doctor.id == this.filtered_doctor_id
-              : true;
-          })
-          .reverse();
+        return this.reports.filter(report => {
+          let time = Number(report.bill_date);
+          return (
+            this.filterDateStart <= time &&
+            this.filterDateEnd >= time &&
+            report.doctor.id == this.filtered_doctor_id
+          );
+        });
       }
 
       /**
