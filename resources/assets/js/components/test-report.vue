@@ -1,10 +1,19 @@
 <template>
   <div>
     <div class="buttons pb-2 statics">
-      <!-- <button class="btn btn-primary" @click="visibility = 'all'">All</button> -->
-      <!-- <button class="btn btn-primary" @click="visibility = 'today'">Today</button> -->
-      &nbsp;
-      &nbsp;
+      <div class="filter-method">
+        <h5>Filter Mode</h5>
+        <label class="mr-3">
+          <input type="radio" name="filter_mode" v-model="filter_mode" value="date" /> Date
+        </label>
+        <label class="mr-3">
+          <input type="radio" name="filter_mode" v-model="filter_mode" value="test" /> Test
+        </label>
+        <label class="mr-3">
+          <input type="radio" name="filter_mode" v-model="filter_mode" value="test_and_date" /> Date and Test
+        </label>
+      </div>
+
       <b>From:&nbsp;</b>
       <input
         type="date"
@@ -100,15 +109,17 @@ export default {
       fromDate: null,
       toDate: null,
       tests: [],
+      filter_mode: "date",
       filtered_test_id: null
     };
   },
+
   computed: {
     count() {
       return this.filteredSells.length;
     },
     filteredSells() {
-      if (this.filtered_test_id) {
+      if (this.filter_mode === "test") {
         return this.sellReports
           .filter(report => {
             let time = Number(report.date);
@@ -117,7 +128,7 @@ export default {
           .reverse();
       }
 
-      if (this.fromDate && this.toDate) {
+      if (this.fromDate && this.toDate && this.filter_mode === "date") {
         return this.sellReports
           .filter(report => {
             let time = Number(report.date);
@@ -126,7 +137,12 @@ export default {
           .reverse();
       }
 
-      if (this.fromDate && this.toDate && this.filtered_test_id) {
+      if (
+        this.fromDate &&
+        this.toDate &&
+        this.filtered_test_id &&
+        this.filter_mode === "test_and_date"
+      ) {
         return this.sellReports
           .filter(report => {
             let time = Number(report.date);

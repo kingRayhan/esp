@@ -71442,6 +71442,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -71492,9 +71501,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       fromDate: null,
       toDate: null,
       tests: [],
+      filter_mode: "date",
       filtered_test_id: null
     };
   },
+
 
   computed: {
     count: function count() {
@@ -71503,21 +71514,21 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     filteredSells: function filteredSells() {
       var _this = this;
 
-      if (this.filtered_test_id) {
+      if (this.filter_mode === "test") {
         return this.sellReports.filter(function (report) {
           var time = Number(report.date);
           return report.product_id == _this.filtered_test_id;
         }).reverse();
       }
 
-      if (this.fromDate && this.toDate) {
+      if (this.fromDate && this.toDate && this.filter_mode === "date") {
         return this.sellReports.filter(function (report) {
           var time = Number(report.date);
           return _this.fromDate <= time && _this.toDate >= time;
         }).reverse();
       }
 
-      if (this.fromDate && this.toDate && this.filtered_test_id) {
+      if (this.fromDate && this.toDate && this.filtered_test_id && this.filter_mode === "test_and_date") {
         return this.sellReports.filter(function (report) {
           var time = Number(report.date);
           return _this.fromDate <= time && _this.toDate >= time && report.product_id == _this.filtered_test_id;
@@ -72603,7 +72614,77 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "buttons pb-2 statics" }, [
-      _vm._v("\n     \n     \n    "),
+      _c("div", { staticClass: "filter-method" }, [
+        _c("h5", [_vm._v("Filter Mode")]),
+        _vm._v(" "),
+        _c("label", { staticClass: "mr-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filter_mode,
+                expression: "filter_mode"
+              }
+            ],
+            attrs: { type: "radio", name: "filter_mode", value: "date" },
+            domProps: { checked: _vm._q(_vm.filter_mode, "date") },
+            on: {
+              change: function($event) {
+                _vm.filter_mode = "date"
+              }
+            }
+          }),
+          _vm._v(" Date\n      ")
+        ]),
+        _vm._v(" "),
+        _c("label", { staticClass: "mr-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filter_mode,
+                expression: "filter_mode"
+              }
+            ],
+            attrs: { type: "radio", name: "filter_mode", value: "test" },
+            domProps: { checked: _vm._q(_vm.filter_mode, "test") },
+            on: {
+              change: function($event) {
+                _vm.filter_mode = "test"
+              }
+            }
+          }),
+          _vm._v(" Test\n      ")
+        ]),
+        _vm._v(" "),
+        _c("label", { staticClass: "mr-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filter_mode,
+                expression: "filter_mode"
+              }
+            ],
+            attrs: {
+              type: "radio",
+              name: "filter_mode",
+              value: "test_and_date"
+            },
+            domProps: { checked: _vm._q(_vm.filter_mode, "test_and_date") },
+            on: {
+              change: function($event) {
+                _vm.filter_mode = "test_and_date"
+              }
+            }
+          }),
+          _vm._v(" Date and Test\n      ")
+        ])
+      ]),
+      _vm._v(" "),
       _c("b", [_vm._v("From: ")]),
       _vm._v(" "),
       _c("input", {
