@@ -16,7 +16,6 @@ Route::middleware('auth')->group(function () {
     Route::post('settings/updateMe', 'AuthController@updateMe')->name('settings.updateMe');
 
 
-
     Route::get('slips', 'SlipController@index')->name('slip.index');
     Route::get('slip/{slip}', 'SlipController@show')->name('slip.show');
 

@@ -1,0 +1,1 @@
+alias sail='docker-compose exec'
