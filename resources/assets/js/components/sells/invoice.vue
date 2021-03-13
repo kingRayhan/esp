@@ -7,42 +7,42 @@
             <div class="cash-input-group">
               <label for="name">Customer Name</label>
               <input
-                required
-                type="text"
-                id="name"
-                class="cash-input"
-                placeholder="Customer Name"
-                @change="$emit('customer_name' , $event.target.value)"
+                  required
+                  type="text"
+                  id="name"
+                  class="cash-input"
+                  placeholder="Customer Name"
+                  @change="$emit('customer_name' , $event.target.value)"
               />
             </div>
             <div class="cash-input-group">
               <label for="age">Customer Age</label>
               <input
-                required
-                type="number"
-                id="age"
-                class="cash-input"
-                placeholder="Customer Age"
-                @change="$emit('customer_age' , $event.target.value)"
+                  required
+                  type="number"
+                  id="age"
+                  class="cash-input"
+                  placeholder="Customer Age"
+                  @change="$emit('customer_age' , $event.target.value)"
               />
             </div>
             <div class="cash-input-group">
               <label for="discount">Discount</label>
               <input
-                type="number"
-                id="discount"
-                class="cash-input"
-                placeholder="Discount"
-                v-model="discount"
-                @change="$emit('discount' , $event.target.value)"
+                  type="number"
+                  id="discount"
+                  class="cash-input"
+                  placeholder="Discount"
+                  v-model="discount"
+                  @change="$emit('discount' , $event.target.value)"
               />
             </div>
             <div class="cash-input-group">
               <label for="gender">Gender</label>
               <select
-                id="gender"
-                @change="$emit('customer_gender' , $event.target.value)"
-                class="form-control"
+                  id="gender"
+                  @change="$emit('customer_gender' , $event.target.value)"
+                  class="form-control"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -51,45 +51,46 @@
             <div class="cash-input-group">
               <label for="date">Date</label>
               <input
-                type="date"
-                id="date"
-                @change="$emit('bill_date' , $event.target.value)"
-                class="form-control"
-                required
+                  type="date"
+                  id="date"
+                  @change="$emit('bill_date', $event.target.value)"
+                  class="form-control"
+                  required
               />
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Total Bill</label>
-              <input type="number" class="cash-input" id="paid-amount" disabled :value="totalBill" />
+              <input type="number" class="cash-input" id="paid-amount" disabled :value="totalBill"/>
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Paid Amount</label>
               <input
-                type="number"
-                class="cash-input"
-                id="paid-amount"
-                @change="$emit('paid' , $event.target.value)"
-                placeholder="Paid Amount"
-                v-model="paidAmount"
+                  type="number"
+                  class="cash-input"
+                  id="paid-amount"
+                  @change="$emit('paid' , $event.target.value)"
+                  placeholder="Paid Amount"
+                  v-model="paidAmount"
               />
             </div>
             <div class="cash-input-group">
               <label for="paid-amount">Return Amount</label>
               <input
-                type="number"
-                class="cash-input"
-                id="paid-amount"
-                placeholder="Return Amount"
-                disabled
-                :value="Math.round(returnAmount , 2)"
+                  type="number"
+                  class="cash-input"
+                  id="paid-amount"
+                  placeholder="Return Amount"
+                  disabled
+                  :value="Math.round(returnAmount , 2)"
               />
             </div>
             <div class="cash-input-group">
               <button
-                v-if="returnAmount >= 0"
-                class="btn btn-primary btn-sm"
-                type="submit"
-              >Confirm Purchase</button>
+                  v-if="returnAmount >= 0"
+                  class="btn btn-primary btn-sm"
+                  type="submit"
+              >Confirm Purchase
+              </button>
               <button class="btn btn-danger btn-sm" @click="$emit('cancelOrder')">Cancel</button>
             </div>
           </form>
@@ -215,8 +216,8 @@ export default {
     },
     totalBill() {
       return this.bags.reduce(
-        (totalBill, current) => (totalBill += current.price * current.quantity),
-        0
+          (totalBill, current) => (totalBill += current.price * current.quantity),
+          0
       );
     },
     vatAmount() {
@@ -254,16 +255,17 @@ export default {
 </script>
 
 
-
 <style lang="scss">
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font: 14px/1.4 Arial, serif;
 }
+
 #page-wrap {
   max-width: 500px;
   margin: 0 auto;
@@ -273,6 +275,7 @@ body {
 table {
   border-collapse: collapse;
 }
+
 table td,
 table th {
   border: 1px solid black;
@@ -297,6 +300,7 @@ table th {
   float: left;
   padding-top: 10px;
 }
+
 #customer {
   overflow: hidden;
 }
@@ -310,6 +314,7 @@ table th {
   text-align: center;
   cursor: default;
   margin-bottom: 40px;
+
   h1 {
     margin: 0;
     padding: 0;
@@ -324,6 +329,7 @@ table th {
   font-style: italic;
   padding: 10px 5px;
 }
+
 #logohelp input {
   margin-bottom: 5px;
 }
@@ -339,9 +345,11 @@ table th {
   width: 230px;
   float: right;
 }
+
 #meta td {
   text-align: right;
 }
+
 #meta td.meta-head {
   text-align: left;
   background: #eee;
@@ -351,23 +359,29 @@ table th {
   width: 100%;
   margin: 30px 0 0 0;
   border: 1px solid black;
+
   th {
     background: #eee;
   }
+
   tr.item-row td {
     border: 0;
     vertical-align: top;
   }
+
   td.description {
     width: 300px;
   }
+
   td.item-name {
     width: 175px;
   }
+
   td.total-line {
     border-right: 0;
     text-align: right;
   }
+
   td.total-value {
     border-left: 0;
     padding: 10px;
@@ -377,6 +391,7 @@ table th {
 #terms {
   text-align: center;
   margin: 20px 0 0 0;
+
   h5 {
     text-transform: uppercase;
     font: 13px Helvetica, Sans-Serif;
@@ -385,6 +400,7 @@ table th {
     padding: 0 0 8px 0;
     margin: 0 0 8px 0;
   }
+
   a {
     color: #000;
   }
@@ -396,13 +412,16 @@ table.invoice-details {
       border-top: 1px solid #000;
     }
   }
+
   .left-border {
     border-left: 1px solid #000;
   }
+
   .top-border {
     border-top: 1px solid #000;
   }
 }
+
 table.invoice-details td {
   vertical-align: middle;
   text-align: center;
@@ -417,20 +436,24 @@ table.invoice-details td {
 <style lang="scss" scoped>
 .cash-input-group {
   padding: 10px 0;
+
   .cash-input {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     font-size: 18px;
   }
+
   label {
     font-weight: bold;
   }
 }
+
 .purchase-confirm {
   border: 1px solid #ddd;
   padding: 18px;
   margin-top: 28px;
+
   h2 {
     text-transform: uppercase;
     font-size: 30px;

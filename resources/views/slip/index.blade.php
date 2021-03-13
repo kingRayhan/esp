@@ -8,5 +8,11 @@
 
 
 @section('page-content')
-    <report></report>
+
+    <report :slips="{{$slips->toJSON()}}" :grandtotal="{{$grandTotal}}" :grandnetbill="{{$grandNetBill}}"
+            :granddiscount="{{$grandDiscounts}}"></report>
+    <div class="d-flex align-items-center justify-content-center mb-5">
+
+        {{$slips->appends(request()->query())->links()}}
+    </div>
 @stop
