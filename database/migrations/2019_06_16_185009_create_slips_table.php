@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSlipsTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateSlipsTable extends Migration
             $table->string('customer_name');
             $table->string('customer_age');
             $table->string('customer_gender');
-            $table->string('bill_date')->nullable();
+            $table->dateTime('bill_date')->nullable();
             $table->integer('paid')->nullable();
             $table->integer('discount')->nullable();
             $table->integer('doctor_id')->nullable();

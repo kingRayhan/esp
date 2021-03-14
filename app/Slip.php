@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Slip extends Model
 {
     protected $guarded = [];
+    protected $dates = ['bill_date'];
 
-    protected function doctor()
+    public function doctor()
     {
         return $this->belongsTo(Doctor::class);
     }
-    protected function orders()
+
+    public function orders()
     {
         return $this->hasMany(Sell::class);
     }

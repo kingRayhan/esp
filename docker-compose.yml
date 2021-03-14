@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  ## ----------------------------------------
+  ## Service: Backend (Laravel)
+  ## ----------------------------------------
+  api:
+    build: .
+    networks:
+      - td
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+  ## ----------------------------------------
+  ## Service: Nginx
+  ## ----------------------------------------
+  nginx:
+    image: nginx:1.19.7-alpine
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    working_dir: /var/www/html
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./:/var/www/html
+    networks:
+      - td
+    depends_on:
+      - api
+  npm:
+    image: library/node:10
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: [ 'npm' ]
+  mysql:
+    image: library/mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: labonno
+      MYSQL_DATABASE: labonno
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      - td
+networks:
+  td:
+    name: techdiary
+    driver: bridge

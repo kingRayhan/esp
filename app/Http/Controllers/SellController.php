@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SellResource;
 use App\Sell;
 use App\Slip;
-use App\Product;
 use Illuminate\Http\Request;
 
 class SellController extends Controller
@@ -16,8 +16,31 @@ class SellController extends Controller
      */
     public function index()
     {
-        $sells = Sell::all();
-        return view('sells.index', compact('sells'));
+        $sells = Sell::with(['product', 'slip']);
+        if (request()->query('mode') == 'date') {
+            $from = date(request()->query('from_date'));
+            $to = date(request()->query('to_date'));
+
+            $sells = $sells->whereHas('slip', function ($q) use ($from, $to) {
+                $q->whereBetween('bill_date', [$from, $to]);
+            });
+        } elseif (request()->query('mode') == 'test') {
+            $sells = $sells->whereHas('product', function ($q) {
+                $q->where('id', request()->query('test'));
+            });
+        } elseif (request()->query('mode') == 'test_and_date') {
+            $from = date(request()->query('from_date'));
+            $to = date(request()->query('to_date'));
+            $sells = $sells->whereHas('slip', function ($q) use ($from, $to) {
+                $q->whereBetween('bill_date', [$from, $to]);
+            })->whereHas('product', function ($q) {
+                $q->where('id', request()->query('test'));
+            });;
+        }
+        $sum = $sells->sum('sell_price');
+        $sells = SellResource::collection($sells->orderBy('id', 'desc')->paginate(15));
+
+        return view('sells.index', ['sells' => $sells, 'total_sales' => $sum]);
     }
 
     /**
@@ -33,7 +56,7 @@ class SellController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -44,7 +67,7 @@ class SellController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sell  $sell
+     * @param \App\Sell $sell
      * @return \Illuminate\Http\Response
      */
     public function show(Sell $sell)
@@ -55,7 +78,7 @@ class SellController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Sell  $sell
+     * @param \App\Sell $sell
      * @return \Illuminate\Http\Response
      */
     public function edit(Sell $sell)
@@ -66,8 +89,8 @@ class SellController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sell  $sell
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Sell $sell
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Sell $sell)
@@ -78,7 +101,7 @@ class SellController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Sell  $sell
+     * @param \App\Sell $sell
      * @return \Illuminate\Http\Response
      */
     public function destroy(Sell $sell)
