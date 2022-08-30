@@ -22,7 +22,7 @@
     "dependencies": {
         "hchs-vue-charts": "^1.2.8",
         "moment": "^2.24.0",
-        "moment-timezone": "^0.5.25",
+        "moment-timezone": "^0.5.35",
         "print-js": "^1.0.31",
         "select2": "~4.0",
         "sweetalert": "^2.1.0",
